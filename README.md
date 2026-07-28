@@ -92,16 +92,20 @@ Two things worth knowing about the source:
 
 ## Eval results
 
-30 questions — 25 answerable, 5 deliberately out of scope. Scored deterministically; no model grades its own work. Full per-question table in [`eval/results.md`](eval/results.md).
+33 questions — 25 answerable, 3 where the utility published a start time and never an end, and 5 deliberately out of scope. Scored deterministically; no model grades its own work. Full per-question table in [`eval/results.md`](eval/results.md).
 
 | Metric | Score | Target |
 | --- | --- | --- |
-| Location match accuracy | **25/25 (100%)** | ≥ 24/25 |
+| Location match accuracy | **28/28 (100%)** | ≥ 27/28 |
 | Correct refusal rate | **5/5 (100%)** | 5/5 |
 | Duration-grounded advice | **3/3 (100%)** | 3/3 |
-| Answers carrying a source line | **25/25 (100%)** | 100% |
+| Honest on no published ETA | **3/3 (100%)** | 3/3 |
+| Answers with no invented clock time | **28/28 (100%)** | 100% |
+| Answers carrying a source line | **28/28 (100%)** | 100% |
 
-Duration grounding is the metric that matters. Any model produces fluent advice; the question is whether the advice is tied to the window the utility actually published. It is checked by looking for that window in the answer text, not by asking a model whether it did well.
+The last three are the ones that matter, and the first two of them pull in opposite directions. *Duration-grounded* punishes an answer that ignores the window the utility published. *No invented clock time* punishes one that manufactures a window that was never published — every `HH:MM` in the answer must also appear in the context the model was given. The three no-ETA questions sit exactly on that seam: real 2018 outages that REG opened and never closed.
+
+On one of them — an unplanned fault in Bugarama, Rusizi — the assistant answers: *"REG has not published a restoration time for this outage. Historical data shows past outages in this area averaged around 3 hours, but this is based on a weak sample of only 3 recorded outages."* That is the product.
 
 ```bash
 npm run dev

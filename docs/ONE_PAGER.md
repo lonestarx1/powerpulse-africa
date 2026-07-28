@@ -48,16 +48,18 @@ The architecture is utility-agnostic by construction: the ingest layer normalize
 
 ### Evaluation results
 
-30 questions, 25 answerable from REG data and 5 deliberately out of scope.
+33 questions: 25 answerable from REG data, 3 where REG published a start time and never an end, and 5 deliberately out of scope.
 
 | metric | result |
 |---|---|
-| Location match accuracy | **25 / 25** |
+| Location match accuracy | **28 / 28** |
 | Correct refusal rate (out-of-scope) | **5 / 5** |
 | Duration-grounded advice | **3 / 3** |
-| Answers carrying a visible source line | **25 / 25** |
+| Honest when no ETA was published | **3 / 3** |
+| Answers with no invented clock time | **28 / 28** |
+| Answers carrying a visible source line | **28 / 28** |
 
-Scored deterministically — no model grades its own work. Duration grounding is checked by looking for the utility's published window in the answer text.
+Scored deterministically — no model grades its own work. The last two metrics pull against each other on purpose: one punishes ignoring the window the utility published, the other punishes inventing a window it never published. Every `HH:MM` in an answer must also appear in the context the model was given.
 
 *Full question set and scoring script in the repo under `eval/`.*
 
