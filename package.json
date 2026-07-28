@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "parse": "python3 scripts/parse_outages.py"
+    "parse": "python3 scripts/parse_outages.py",
+    "eval": "node eval/run_eval.mjs"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.26",
