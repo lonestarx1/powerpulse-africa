@@ -42,7 +42,6 @@ export function RecordRow({
   return (
     <Sheet
       record={record}
-      tone={tone}
       trigger={(open) => (
         <button
           type="button"
@@ -79,7 +78,6 @@ export function RecordSheet({
   return (
     <Sheet
       record={record}
-      tone={tone}
       trigger={(open) => (
         <button
           type="button"
@@ -103,11 +101,9 @@ export function RecordSheet({
 
 function Sheet({
   record,
-  tone,
   trigger,
 }: {
   record: RecordFields;
-  tone: string;
   trigger: (open: () => void) => React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);

@@ -9,15 +9,16 @@
  */
 
 import Link from "next/link";
-import { LangToggle, Wordmark } from "@/components/chrome";
+import { AccountChip, LangToggle, Wordmark } from "@/components/chrome";
 import { copyFor } from "@/lib/i18n";
 import { dataset, outages } from "@/lib/outages";
 import { readPrefs } from "@/lib/prefs";
 import { datasetSummary } from "@/lib/stats";
+import { FREE_FEATURES, PRICE } from "@/lib/tier";
 import { fmtDateLong, placeLabel } from "@/lib/ui";
 
 export default async function Landing() {
-  const { profile, place, lang } = await readPrefs();
+  const { profile, place, lang, user } = await readPrefs();
   const t = copyFor(lang);
   const resuming = profile !== null && place !== null;
   const summary = datasetSummary(outages);
@@ -35,7 +36,10 @@ export default async function Landing() {
         <div className="relative">
           <div className="flex items-center justify-between gap-3">
             <Wordmark />
-            <LangToggle lang={lang} next="/" />
+            <div className="flex items-center gap-2">
+              <LangToggle lang={lang} next="/" />
+              <AccountChip user={user} next="/" />
+            </div>
           </div>
 
           <h1 className="mt-10 text-[34px] font-semibold leading-[1.08] tracking-[-0.02em]">
@@ -132,6 +136,49 @@ export default async function Landing() {
             <Rule>{t.honestAsk}</Rule>
           </ul>
         </div>
+      </section>
+
+      {/* ---------------------------------------------------------- pricing */}
+      <section className="px-5 pt-12">
+        <SectionTitle>Free, and Pro</SectionTitle>
+        <p className="mt-3 text-[13.5px] leading-relaxed text-muted">
+          Everything the utility published is free for everyone, forever — the live status, the
+          full history for your area, and the raw record behind every number. Pro is the two
+          things that cost us something per person: advice written for your situation, and being
+          told before the power goes rather than after.
+        </p>
+
+        <div className="mt-4 flex flex-col gap-2.5">
+          <div className="rounded-card border border-line bg-surface px-4 py-3.5">
+            <div className="flex items-baseline justify-between gap-3">
+              <span className="text-[13.5px] font-medium">Free</span>
+              <span className="text-[12px] text-faint">no account</span>
+            </div>
+            <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted">
+              {FREE_FEATURES.slice(0, 3).join(" · ")}
+            </p>
+          </div>
+
+          <div className="rounded-card border border-timed/35 bg-surface px-4 py-3.5">
+            <div className="flex items-baseline justify-between gap-3">
+              <span className="text-[13.5px] font-medium text-timed">Pro</span>
+              <span className="tnum text-[12.5px]">
+                <span className="font-semibold">{PRICE.display}</span>
+                <span className="text-muted">/{PRICE.period}</span>
+              </span>
+            </div>
+            <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted">
+              Customised advice · pre-outage alerts · {PRICE.rails.join(" / ")}
+            </p>
+          </div>
+        </div>
+
+        <Link
+          href="/upgrade"
+          className="mt-3 grid min-h-[44px] place-items-center rounded-full border border-line bg-surface text-[13px] text-muted transition active:scale-[0.98]"
+        >
+          Compare the plans
+        </Link>
       </section>
 
       {/* ------------------------------------------------------------- foot */}

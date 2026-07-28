@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { chooseLang, resetPrefs } from "@/app/actions";
+import { initialOf } from "@/lib/auth";
 import { copyFor, type Lang } from "@/lib/i18n";
 import { PROFILE_META, type Profile } from "@/lib/ui";
 
@@ -43,6 +44,32 @@ export function Wordmark({ compact = false }: { compact?: boolean }) {
   );
 }
 
+/**
+ * Account state. Guest is a first-class state, not a nag -- the free tier
+ * genuinely works without an account, so this is a chip, not a wall.
+ */
+export function AccountChip({ user, next }: { user: string | null; next: string }) {
+  if (!user) {
+    return (
+      <Link
+        href={`/login?next=${encodeURIComponent(next)}`}
+        className="flex min-h-[32px] items-center rounded-full border border-line bg-surface px-3 text-[11px] text-muted transition active:scale-[0.97]"
+      >
+        Guest
+      </Link>
+    );
+  }
+  return (
+    <Link
+      href={`/login?next=${encodeURIComponent(next)}`}
+      aria-label={`Signed in as ${user}`}
+      className="grid size-[32px] shrink-0 place-items-center rounded-full border border-ask/40 bg-ask/10 text-[12px] font-semibold text-ask transition active:scale-[0.97]"
+    >
+      {initialOf(user)}
+    </Link>
+  );
+}
+
 /** Server-rendered language switch, so every string flips, not just the model's. */
 export function LangToggle({ lang, next }: { lang: Lang; next: string }) {
   const other: Lang = lang === "rw" ? "en" : "rw";
@@ -66,11 +93,13 @@ export function Header({
   next,
   profile,
   compact = true,
+  right,
 }: {
   lang: Lang;
   next: string;
   profile?: Profile | null;
   compact?: boolean;
+  right?: React.ReactNode;
 }) {
   return (
     <header className="flex items-center justify-between gap-3 px-4 pb-1 pt-4">
@@ -79,6 +108,7 @@ export function Header({
       </Link>
 
       <div className="flex items-center gap-2">
+        {right}
         <LangToggle lang={lang} next={next} />
         {profile ? (
           <form action={resetPrefs}>
@@ -149,7 +179,7 @@ export function PinnedClockBanner({ label }: { label: string }) {
   return (
     <div className="mx-4 mt-3 flex items-center gap-2 rounded-full border border-dashed border-ask/40 bg-ask/5 px-3 py-1.5">
       <span aria-hidden className="size-1.5 shrink-0 rounded-full bg-ask" />
-      <span className="text-[11.5px] leading-tight text-ask/90">Clock pinned to {label}</span>
+      <span className="text-[11.5px] leading-tight text-ask/90">Showing {label}</span>
     </div>
   );
 }

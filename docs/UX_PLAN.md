@@ -1,5 +1,25 @@
 # UX & Interface Plan
 
+> **Addendum — shipped shape (28 July, 14:1x).** The app is now a five-screen funnel rather than
+> the single screen this document originally planned: `/` landing → `/start` category →
+> `/location` district then sector → `/area` the record → `/chat` the assistant, plus `/upgrade`.
+>
+> The §2 argument still holds and is in fact now resolved rather than overruled: `/area` is
+> card-first and glanceable because "is my power out" is a state, and `/chat` is a thread because
+> a follow-up is a conversation. They are separate screens instead of one compromise.
+>
+> **Freemium.** Free is everything the utility published — live status, full area history, the
+> national schedule, and the raw source row behind every number. Pro (RWF 500/month, mobile
+> money) is customised advice and pre-outage alerts. The line follows the architecture: the free
+> features are deterministic and cost nothing per user; the paid ones are a model call and a
+> push. See `lib/tier.ts`.
+>
+> **Known gap:** the paywall is enforced in the UI only. `/api/advise` does not check the tier
+> cookie, because `eval/run_eval.mjs` calls that route over HTTP without cookies and the eval
+> numbers are a scoring artifact. Enforcing it is one guard in the route plus one header in the
+> harness — post-freeze work, not pre-.
+
+
 **Written 28 July 2026, 13:25 CAT. Code freeze is 15:00.** That is **95 minutes**, and roughly 20 of those belong to filming. Everything below is ordered so that the thing you build first is the thing that appears in the video. Cut from the bottom.
 
 Backend contract is already fixed and is not up for renegotiation in this window — `lib/answer.ts` exports `advise()` returning `AdviseResponse`, and `app/api/advise/route.ts` is live. This document plans the surface on top of it.

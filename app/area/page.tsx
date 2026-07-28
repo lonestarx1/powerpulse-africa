@@ -10,12 +10,14 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ConfidenceTag, Sparkbars, Stat } from "@/components/bits";
-import { Header, PinnedClockBanner } from "@/components/chrome";
+import { AccountChip, Header, PinnedClockBanner } from "@/components/chrome";
+import { AlertsCard, LockIcon, PlanBadge } from "@/components/paywall";
 import { RecordRow } from "@/components/record-sheet";
 import { NoEtaNote, StatusHero, recordFields } from "@/components/status-hero";
 import foodSafety from "@/data/food_safety.json";
 import { longestDuration, overThreshold, upcomingNational } from "@/lib/dashboard";
 import { copyFor } from "@/lib/i18n";
+import { ALERT_LEAD_MINUTES } from "@/lib/tier";
 import { kigaliNow, liveStatus, outagesForPlace } from "@/lib/outages";
 import { readPrefs } from "@/lib/prefs";
 import { historyFor } from "@/lib/stats";
@@ -40,7 +42,7 @@ type Params = { [key: string]: string | string[] | undefined };
 
 export default async function AreaPage({ searchParams }: { searchParams: Promise<Params> }) {
   const params = await searchParams;
-  const { profile, place, lang } = await readPrefs();
+  const { profile, place, lang, tier, alerts, user } = await readPrefs();
   if (!profile) redirect("/start");
   if (!place) redirect("/location");
 
@@ -70,10 +72,23 @@ export default async function AreaPage({ searchParams }: { searchParams: Promise
   const overFridge = overThreshold(records, fridgeHours);
 
   const chatHref = at ? `/chat?at=${encodeURIComponent(at)}` : "/chat";
+  const areaHref = at ? `/area?at=${encodeURIComponent(at)}` : "/area";
+  const lead = fmtDuration(ALERT_LEAD_MINUTES);
+  const nextHere = upcomingHere[0] ?? null;
 
   return (
     <main className="flex flex-1 flex-col pb-10">
-      <Header lang={lang} next="/area" profile={profile} />
+      <Header
+        lang={lang}
+        next={areaHref}
+        profile={profile}
+        right={
+          <>
+            <PlanBadge tier={tier} />
+            <AccountChip user={user} next={areaHref} />
+          </>
+        }
+      />
       {pinned ? <PinnedClockBanner label={`${fmtDayDate(today)}, ${nowLabel(now)}`} /> : null}
 
       {/* ------------------------------------------------------- right now */}
@@ -96,21 +111,66 @@ export default async function AreaPage({ searchParams }: { searchParams: Promise
 
       {/* --------------------------------------------------- ask assistant */}
       <div className="mt-6 px-4">
-        <Link
-          href={chatHref}
-          className="flex items-center gap-3 rounded-card border border-ask/35 bg-ask/10 px-4 py-3.5 transition active:scale-[0.985]"
-        >
-          <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-xl bg-ask/20 text-ask">
-            ✦
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="block text-[14px] font-medium">{t.askAssistant}</span>
-            <span className="block truncate text-[11.5px] text-muted">{t.askAssistantSub}</span>
-          </span>
-          <span aria-hidden className="shrink-0 text-faint">
-            ›
-          </span>
-        </Link>
+        {tier === "pro" ? (
+          <Link
+            href={chatHref}
+            className="flex items-center gap-3 rounded-card border border-ask/35 bg-ask/10 px-4 py-3.5 transition active:scale-[0.985]"
+          >
+            <span
+              aria-hidden
+              className="grid size-9 shrink-0 place-items-center rounded-xl bg-ask/20 text-ask"
+            >
+              ✦
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[14px] font-medium">{t.askAssistant}</span>
+              <span className="block truncate text-[11.5px] text-muted">{t.askAssistantSub}</span>
+            </span>
+            <span aria-hidden className="shrink-0 text-faint">
+              ›
+            </span>
+          </Link>
+        ) : (
+          <Link
+            href={`/upgrade?next=${encodeURIComponent(chatHref)}`}
+            className="flex items-center gap-3 rounded-card border border-timed/30 bg-surface px-4 py-3.5 transition active:scale-[0.985]"
+          >
+            <span
+              aria-hidden
+              className="grid size-9 shrink-0 place-items-center rounded-xl bg-timed/15 text-timed"
+            >
+              <LockIcon />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[14px] font-medium">{t.askAssistant}</span>
+              <span className="block truncate text-[11.5px] text-muted">
+                Advice for a {PROFILE_META[profile].label.toLowerCase()} — Pro
+              </span>
+            </span>
+            <span aria-hidden className="shrink-0 text-faint">
+              ›
+            </span>
+          </Link>
+        )}
+      </div>
+
+      {/* ------------------------------------------------------- alerts */}
+      <div className="mt-3 px-4">
+        <AlertsCard
+          tier={tier}
+          enabled={alerts}
+          next={areaHref}
+          lead={lead}
+          upcoming={
+            nextHere
+              ? {
+                  day: fmtRelativeDay(nextHere.date, today),
+                  window: fmtWindow(nextHere.start_time, nextHere.end_time),
+                  area: placeLabel(place.district, place.sector),
+                }
+              : null
+          }
+        />
       </div>
 
       {/* -------------------------------------------------- what this means */}
