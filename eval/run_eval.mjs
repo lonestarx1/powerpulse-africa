@@ -4,7 +4,7 @@
  *   npm run dev                       # in another terminal
  *   node eval/run_eval.mjs            # or: EVAL_BASE_URL=https://... node eval/run_eval.mjs
  *
- * Four metrics, all deterministic -- no model judges its own homework:
+ * Five metrics, all deterministic -- no model judges its own homework:
  *
  *   1. Location match accuracy   did we resolve the right (district, sector)?
  *   2. Correct refusal rate      on the 5 out-of-scope questions, did we decline
@@ -13,6 +13,9 @@
  *                                does the answer actually cite that window?
  *   4. No invented clock times   every HH:MM in the answer must also appear in
  *                                the context we handed the model.
+ *   5. Conversational routing    "hello" and "what can you do" must be answered
+ *                                as conversation, not as a failed location
+ *                                lookup -- and must still assert nothing.
  *
  * Metrics 3 and 4 are the ones that matter, and they pull in opposite
  * directions: 3 punishes an answer that ignores the published window, 4
@@ -55,11 +58,39 @@ function scoreLocation(q, res) {
   return { ok, got: res.place.sector ? `${res.place.sector}, ${res.place.district}` : res.place.district };
 }
 
+/**
+ * A conversational turn has looked no record up, so it is allowed to be
+ * friendly but not to assert anything: no clock time, and no phone-number
+ * shaped run of digits. Deterministic, and it is the guard that lets a chatty
+ * reply count as a refusal without a model grading it.
+ */
+function assertsNothing(text) {
+  const times = [...clockTokens(text)];
+  const digits = /\b[\d+][\d\s-]{5,}\b/.test(text);
+  return {
+    ok: times.length === 0 && !digits,
+    got: times.length ? "states a clock time" : digits ? "states a phone-like number" : "asserts nothing",
+  };
+}
+
 function scoreRefusal(res) {
-  // Declining looks like: no place in our data, or asking which place is meant.
-  // Producing a confident answer for Kampala is the failure we are measuring.
-  const ok = res.kind === "unknown_place" || res.kind === "clarify";
-  return { ok, got: res.kind };
+  // Declining looks like: no place in our data, asking which place is meant,
+  // or a conversational reply that answers nothing. Producing a confident
+  // answer for Kampala is the failure we are measuring.
+  if (res.kind === "unknown_place" || res.kind === "clarify") return { ok: true, got: res.kind };
+  if (res.kind === "chat") {
+    const guard = assertsNothing(res.message);
+    return { ok: guard.ok, got: `chat/${res.intent}: ${guard.got}` };
+  }
+  return { ok: false, got: res.kind };
+}
+
+/** A conversational turn must be routed as one, and must still assert nothing. */
+function scoreChat(q, res) {
+  if (res.kind !== "chat") return { ok: false, got: res.kind };
+  const guard = assertsNothing(res.message);
+  const intentOk = !q.expect.intent || q.expect.intent === res.intent;
+  return { ok: guard.ok && intentOk, got: `${res.intent}: ${guard.got}` };
 }
 
 function scoreDuration(q, res) {
@@ -137,6 +168,7 @@ function scoreInventedTimes(res) {
 const rows = [];
 let locOk = 0, locTotal = 0, refOk = 0, refTotal = 0, durOk = 0, durTotal = 0;
 let sourced = 0, answers = 0, timeOk = 0, timeTotal = 0, etaOk = 0, etaTotal = 0;
+let chatOk = 0, chatTotal = 0;
 
 for (const q of spec.questions) {
   let res;
@@ -144,7 +176,9 @@ for (const q of spec.questions) {
     res = await ask(q);
   } catch (error) {
     rows.push({ id: q.id, question: q.question, metric: "error", ok: false, got: String(error).slice(0, 120) });
-    if (q.expect.kind === "refuse") refTotal++; else locTotal++;
+    if (q.expect.kind === "chat") chatTotal++;
+    else if (q.expect.kind === "refuse") refTotal++;
+    else locTotal++;
     continue;
   }
 
@@ -164,7 +198,12 @@ for (const q of spec.questions) {
     }
   }
 
-  if (q.expect.kind === "refuse") {
+  if (q.expect.kind === "chat") {
+    chatTotal++;
+    const c = scoreChat(q, res);
+    if (c.ok) chatOk++;
+    rows.push({ id: q.id, question: q.question, metric: "conversational", ...c });
+  } else if (q.expect.kind === "refuse") {
     refTotal++;
     const r = scoreRefusal(res);
     if (r.ok) refOk++;
@@ -196,6 +235,7 @@ const md = [
   "| --- | --- | --- |",
   `| Location match accuracy | ${locOk}/${locTotal} (${pct(locOk, locTotal)}) | >= 24/25 |`,
   `| Correct refusal rate | ${refOk}/${refTotal} (${pct(refOk, refTotal)}) | 5/5 |`,
+  `| Conversational turns routed correctly | ${chatOk}/${chatTotal} (${pct(chatOk, chatTotal)}) | ${chatTotal}/${chatTotal} |`,
   `| Duration-grounded advice | ${durOk}/${durTotal} (${pct(durOk, durTotal)}) | ${durTotal}/${durTotal} |`,
   `| Honest on no published ETA | ${etaOk}/${etaTotal} (${pct(etaOk, etaTotal)}) | ${etaTotal}/${etaTotal} |`,
   `| Answers with no invented clock time | ${timeOk}/${timeTotal} (${pct(timeOk, timeTotal)}) | 100% |`,

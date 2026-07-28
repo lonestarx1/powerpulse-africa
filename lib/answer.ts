@@ -15,6 +15,7 @@ import { google } from "@ai-sdk/google";
 import { z } from "zod";
 
 import foodSafety from "@/data/food_safety.json";
+import { fastReply, triage, type Intent } from "./chat";
 import { locate, type Candidate } from "./locate";
 import { historyFor, type History } from "./stats";
 import { liveStatus, outagesForPlace, places, type Outage } from "./outages";
@@ -78,6 +79,17 @@ export type AdviseResponse =
       message: string;
       candidates: { district: string; sector: string | null; label: string }[];
     }
+  | {
+      /**
+       * A turn that was never about an outage record: a greeting, "what can
+       * you do", a general energy question, or something we cannot answer.
+       * Carries `message` so it renders as an ordinary reply, the same as
+       * `clarify` and `unknown_place` do.
+       */
+      kind: "chat";
+      intent: Intent;
+      message: string;
+    }
   | { kind: "unknown_place"; message: string };
 
 type Context = {
@@ -109,7 +121,8 @@ type Context = {
  * Kinyarwanda -- being wrong costs a language, not a fact.
  */
 function detectLanguage(message: string): "rw" | "en" {
-  const rwMarkers = /\b(nta|muriro|amashanyarazi|umuriro|hano|mfite|ryari|kuki|murakoze|byaba|ubu|aha|mu)\b/i;
+  const rwMarkers =
+    /\b(nta|muriro|amashanyarazi|umuriro|hano|mfite|ryari|kuki|murakoze|urakoze|byaba|ubu|aha|mu|muraho|mwaramutse|mwiriwe|bite|amakuru|murabeho)\b/i;
   const enMarkers = /\b(the|power|is|out|when|will|back|how|long|my|we|there|no)\b/i;
   const rw = (message.match(rwMarkers) ?? []).length;
   const en = (message.match(enMarkers) ?? []).length;
@@ -128,52 +141,82 @@ function clarifyMessage(candidates: Candidate[], lang: "rw" | "en"): string {
     : `I could not pin down your location. Which of these do you mean: ${list}?`;
 }
 
-/**
- * Last resort before giving up: ask the model to pull a place name out of the
- * message. Its output is fed straight back through locate(), so it can only
- * ever select a place that exists in the REG data -- it cannot invent one.
- */
-async function extractPlaceWithModel(message: string): Promise<string | null> {
-  try {
-    const { output } = await generateText({
-      model: google(MODEL),
-      output: Output.object({
-        schema: z.object({
-          place: z.string().nullable().describe("The Rwandan place name mentioned, or null."),
-        }),
-      }),
-      system:
-        "Extract the Rwandan place name (sector, district, cell or neighbourhood) from the message. " +
-        "Return only the name, with no extra words. Return null if the message names no place.",
-      prompt: message,
-    });
-    return output.place?.trim() || null;
-  } catch {
-    return null;
-  }
+function unknownPlaceMessage(lang: "rw" | "en"): string {
+  return lang === "rw"
+    ? "Sinabonye aho hantu mu makuru ya REG mfite. Nyandikira izina ry'umurenge cyangwa akarere."
+    : "I have no REG record for that place. Try the sector or district name.";
 }
 
 export async function advise(req: AdviseRequest): Promise<AdviseResponse> {
   const now = req.now ?? new Date();
   const lang = req.language ?? detectLanguage(req.message);
 
+  /** Set by the UI when the user picked a place, so it wins over the text. */
   let place = req.place ?? null;
   let needsConfirmation = false;
   let candidates: Candidate[] = [];
 
-  if (!place) {
-    let result = locate(req.message);
+  // Does what they just typed name a place we hold records for? This runs even
+  // when the UI already pinned one, because it is also how we tell an outage
+  // question from a greeting without spending a model call on it.
+  const located = locate(req.message);
+  let namedAPlace = false;
 
-    if (!result.match && result.candidates.length === 0) {
-      const extracted = await extractPlaceWithModel(req.message);
-      if (extracted) result = locate(extracted);
+  if (located.match) {
+    namedAPlace = true;
+    if (!place) {
+      place = { district: located.match.district, sector: located.match.sector };
+      needsConfirmation = located.needsConfirmation;
+    }
+  } else if (!place && located.candidates.length > 0) {
+    namedAPlace = true;
+    needsConfirmation = located.needsConfirmation;
+    candidates = located.candidates;
+  }
+
+  // Nothing in the message points at a place, so we do not yet know that this
+  // turn is about an outage at all. "Hello" is not a failed location lookup,
+  // and answering it as one is what made the assistant feel like a form.
+  if (!namedAPlace) {
+    const here = place ? label(place, lang) : null;
+    let turn = fastReply(req.message, lang, here);
+
+    if (!turn) {
+      try {
+        turn = await triage({ message: req.message, lang, model: MODEL, profile: req.profile, place: here });
+      } catch {
+        // Triage is down or slow. If the user has already picked a place we
+        // still have a real record to answer from, so take the outage path;
+        // only give up when we have nothing at all.
+        if (!place) return { kind: "unknown_place", message: unknownPlaceMessage(lang) };
+        turn = null;
+      }
     }
 
-    if (result.match) {
-      place = { district: result.match.district, sector: result.match.sector };
-    } else {
-      needsConfirmation = result.needsConfirmation;
-      candidates = result.candidates;
+    // A place name the model spotted still has to survive locate(), so it can
+    // only ever select somewhere that exists in the data.
+    if (turn?.place_mention) {
+      const second = locate(turn.place_mention);
+      if (second.match) {
+        place ??= { district: second.match.district, sector: second.match.sector };
+        namedAPlace = true;
+      } else if (!place && second.candidates.length > 0) {
+        needsConfirmation = second.needsConfirmation;
+        candidates = second.candidates;
+        namedAPlace = true;
+      }
+    }
+
+    if (!namedAPlace && candidates.length === 0) {
+      // A follow-up like "what about my fridge?" is about the area they are
+      // already looking at: when we know where they are, the grounded answer
+      // beats the general one, so those turns fall through to the pipeline.
+      // Greetings and questions about the app itself never do.
+      const grounded =
+        place !== null && (!turn || turn.intent === "outage" || turn.intent === "energy_general");
+      if (!grounded) {
+        return { kind: "chat", intent: turn!.intent, message: turn!.reply };
+      }
     }
   }
 
@@ -189,13 +232,7 @@ export async function advise(req: AdviseRequest): Promise<AdviseResponse> {
         })),
       };
     }
-    return {
-      kind: "unknown_place",
-      message:
-        lang === "rw"
-          ? "Sinabonye aho hantu mu makuru ya REG mfite. Nyandikira izina ry'umurenge cyangwa akarere."
-          : "I have no REG record for that place. Try the sector or district name.",
-    };
+    return { kind: "unknown_place", message: unknownPlaceMessage(lang) };
   }
 
   const records = outagesForPlace(place.district, place.sector);
@@ -238,6 +275,8 @@ export async function advise(req: AdviseRequest): Promise<AdviseResponse> {
   const { output } = await generateText({
     model: google(MODEL),
     output: Output.object({ schema: AnswerSchema }),
+    abortSignal: AbortSignal.timeout(30_000),
+    maxRetries: 1,
     system: systemPrompt,
     prompt: [
       `USER MESSAGE: ${req.message}`,

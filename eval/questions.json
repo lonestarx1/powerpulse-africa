@@ -1,371 +1,449 @@
 {
- "_note": "33 questions. 25 answerable from the REG data, 3 where REG published a start and no end time, and 5 deliberately out of scope. Phrasing is deliberately messy: Kinyarwanda, English, code-switched, and misspelled place names, because that is what people type.",
- "_now_default": "2026-08-05T10:30:00Z",
- "_now_default_note": "12:30 in Kigali on 05 Aug 2026 -- inside the published 12:00-14:00 window for the UTEXRWA feeder outage, so the live path is exercised rather than only history.",
- "questions": [
-  {
-   "id": "q01",
-   "profile": "household",
-   "question": "Nta muriro mu Kimironko",
-   "expect": {
-    "kind": "answer",
-    "district": "Gasabo",
-    "sector": "Kimironko"
-   }
-  },
-  {
-   "id": "q02",
-   "profile": "household",
-   "question": "Hano mu Gisozi nta amashanyarazi, ni ryari azagaruka?",
-   "expect": {
-    "kind": "answer",
-    "district": "Gasabo",
-    "sector": "Gisozi"
-   },
-   "check_duration": true,
-   "duration_tokens": [
-    "14:00",
-    "2:00",
-    "2 PM",
-    "14h",
-    "saa munani",
-    "amasaha 2",
-    "2 hours",
-    "two hours"
-   ]
-  },
-  {
-   "id": "q03",
-   "profile": "shop_owner",
-   "question": "power out in Kacyiru, how long?",
-   "expect": {
-    "kind": "answer",
-    "district": "Gasabo",
-    "sector": "Kacyiru"
-   },
-   "check_duration": true,
-   "duration_tokens": [
-    "14:00",
-    "2:00",
-    "2 PM",
-    "14h",
-    "2 hours",
-    "two hours"
-   ]
-  },
-  {
-   "id": "q04",
-   "profile": "remote_worker",
-   "question": "Nta muriro mu Kinyinya, mfite meeting",
-   "expect": {
-    "kind": "answer",
-    "district": "Gasabo",
-    "sector": "Kinyinya"
-   },
-   "check_duration": true,
-   "duration_tokens": [
-    "14:00",
-    "2:00",
-    "2 PM",
-    "14h",
-    "amasaha 2",
-    "2 hours",
-    "two hours"
-   ]
-  },
-  {
-   "id": "q05",
-   "profile": "household",
-   "question": "nta muriro muri Remera",
-   "expect": {
-    "kind": "answer",
-    "district": "Gasabo",
-    "sector": "Remera"
-   }
-  },
-  {
-   "id": "q06",
-   "profile": "shop_owner",
-   "question": "Nyamirambo nta muriro, mfite inyama muri frigo",
-   "expect": {
-    "kind": "answer",
-    "district": "Nyarugenge",
-    "sector": "Nyamirambo"
-   }
-  },
-  {
-   "id": "q07",
-   "profile": "household",
-   "question": "Hano mu Kimisagara nta muriro kuva mu gitondo",
-   "expect": {
-    "kind": "answer",
-    "district": "Nyarugenge",
-    "sector": "Kimisagara"
-   }
-  },
-  {
-   "id": "q08",
-   "profile": "shop_owner",
-   "question": "Hano mu Masaka nta amashanyarazi",
-   "expect": {
-    "kind": "answer",
-    "district": "Kicukiro",
-    "sector": "Masaka"
-   }
-  },
-  {
-   "id": "q09",
-   "profile": "household",
-   "question": "Kanombe power is out",
-   "expect": {
-    "kind": "answer",
-    "district": "Kicukiro",
-    "sector": "Kanombe"
-   }
-  },
-  {
-   "id": "q10",
-   "profile": "household",
-   "question": "nta muriro i Gahanga",
-   "expect": {
-    "kind": "answer",
-    "district": "Kicukiro",
-    "sector": "Gahanga"
-   }
-  },
-  {
-   "id": "q11",
-   "profile": "shop_owner",
-   "question": "Nyamata nta muriro, mfite ice cream mu frigo",
-   "expect": {
-    "kind": "answer",
-    "district": "Bugesera",
-    "sector": "Nyamata"
-   }
-  },
-  {
-   "id": "q12",
-   "profile": "household",
-   "question": "Mwogo nta amashanyarazi none",
-   "expect": {
-    "kind": "answer",
-    "district": "Bugesera",
-    "sector": "Mwogo"
-   }
-  },
-  {
-   "id": "q13",
-   "profile": "remote_worker",
-   "question": "no power in Muhoza, I work online",
-   "expect": {
-    "kind": "answer",
-    "district": "Musanze",
-    "sector": "Muhoza"
-   }
-  },
-  {
-   "id": "q14",
-   "profile": "household",
-   "question": "Nta muriro mu Rugerero",
-   "expect": {
-    "kind": "answer",
-    "district": "Rubavu",
-    "sector": "Rugerero"
-   }
-  },
-  {
-   "id": "q15",
-   "profile": "household",
-   "question": "Byumba nta muriro",
-   "expect": {
-    "kind": "answer",
-    "district": "Gicumbi",
-    "sector": "Byumba"
-   }
-  },
-  {
-   "id": "q16",
-   "profile": "shop_owner",
-   "question": "power out here in Kiyombe",
-   "expect": {
-    "kind": "answer",
-    "district": "Nyagatare",
-    "sector": "Kiyombe"
-   }
-  },
-  {
-   "id": "q17",
-   "profile": "household",
-   "question": "Fumbwe nta muriro kuva ejo",
-   "expect": {
-    "kind": "answer",
-    "district": "Rwamagana",
-    "sector": "Fumbwe"
-   }
-  },
-  {
-   "id": "q18",
-   "profile": "household",
-   "question": "Bwishyura nta amashanyarazi",
-   "expect": {
-    "kind": "answer",
-    "district": "Karongi",
-    "sector": "Bwishyura"
-   }
-  },
-  {
-   "id": "q19",
-   "profile": "household",
-   "question": "Nta muriro muri Rutsiro yose",
-   "expect": {
-    "kind": "answer",
-    "district": "Rutsiro"
-   }
-  },
-  {
-   "id": "q20",
-   "profile": "remote_worker",
-   "question": "Gatenga nta muriro, ndakora kuri laptop",
-   "expect": {
-    "kind": "answer",
-    "district": "Kicukiro",
-    "sector": "Gatenga"
-   }
-  },
-  {
-   "id": "q21",
-   "profile": "household",
-   "question": "nta muriro mu Kimironk",
-   "_why": "typo -- fuzzy match must still land on Kimironko",
-   "expect": {
-    "kind": "answer",
-    "district": "Gasabo",
-    "sector": "Kimironko"
-   }
-  },
-  {
-   "id": "q22",
-   "profile": "shop_owner",
-   "question": "Muhima power out, my shop has milk and meat",
-   "expect": {
-    "kind": "answer",
-    "district": "Nyarugenge",
-    "sector": "Muhima"
-   }
-  },
-  {
-   "id": "q23",
-   "profile": "household",
-   "question": "Gataraga nta muriro",
-   "expect": {
-    "kind": "answer",
-    "district": "Musanze",
-    "sector": "Gataraga"
-   }
-  },
-  {
-   "id": "q24",
-   "profile": "household",
-   "question": "Kivuye nta amashanyarazi",
-   "expect": {
-    "kind": "answer",
-    "district": "Burera",
-    "sector": "Kivuye"
-   }
-  },
-  {
-   "id": "q25",
-   "profile": "remote_worker",
-   "question": "nta muriro mu Rusororo, mfite deadline",
-   "expect": {
-    "kind": "answer",
-    "district": "Gasabo",
-    "sector": "Rusororo"
-   }
-  },
-  {
-   "id": "n01",
-   "profile": "household",
-   "question": "Nta muriro mu Kanombe, ni ryari uzagaruka?",
-   "_why": "REG published a start and no end time -- the honest answer is that there is no ETA",
-   "now": "2018-09-21T08:00:00Z",
-   "no_eta": true,
-   "expect": {
-    "kind": "answer",
-    "district": "Kicukiro",
-    "sector": "Kanombe"
-   }
-  },
-  {
-   "id": "n02",
-   "profile": "shop_owner",
-   "question": "power out in Bugarama, when is it back? my fridge is full",
-   "_why": "an unplanned fault with no end time -- the case where inventing an ETA does real damage",
-   "now": "2018-09-18T06:00:00Z",
-   "no_eta": true,
-   "expect": {
-    "kind": "answer",
-    "district": "Rusizi",
-    "sector": "Bugarama"
-   }
-  },
-  {
-   "id": "n03",
-   "profile": "remote_worker",
-   "question": "Nzahaha nta muriro, mfite akazi ko kurangiza",
-   "_why": "same fault, different profile -- advice must be framed around the uncertainty",
-   "now": "2018-09-18T06:00:00Z",
-   "no_eta": true,
-   "expect": {
-    "kind": "answer",
-    "district": "Rusizi",
-    "sector": "Nzahaha"
-   }
-  },
-  {
-   "id": "x01",
-   "profile": "household",
-   "question": "Nta muriro i Kampala, ni ryari uzagaruka?",
-   "_why": "outside Rwanda -- not in the REG data",
-   "expect": {
-    "kind": "refuse"
-   }
-  },
-  {
-   "id": "x02",
-   "profile": "household",
-   "question": "Ni ryari amashanyarazi azahenduka mu Rwanda?",
-   "_why": "tariff policy -- nothing in the data can answer it",
-   "expect": {
-    "kind": "refuse"
-   }
-  },
-  {
-   "id": "x03",
-   "profile": "remote_worker",
-   "question": "Ni ryari internet izagaruka?",
-   "_why": "different utility entirely",
-   "expect": {
-    "kind": "refuse"
-   }
-  },
-  {
-   "id": "x04",
-   "profile": "household",
-   "question": "no power in Zanzibar",
-   "_why": "another country",
-   "expect": {
-    "kind": "refuse"
-   }
-  },
-  {
-   "id": "x05",
-   "profile": "shop_owner",
-   "question": "Mpa numero ya telefone ya REG nkababaze",
-   "_why": "we hold no phone numbers and must not invent one",
-   "expect": {
-    "kind": "refuse"
-   }
-  }
- ]
+  "_note": "33 questions. 25 answerable from the REG data, 3 where REG published a start and no end time, and 5 deliberately out of scope. Phrasing is deliberately messy: Kinyarwanda, English, code-switched, and misspelled place names, because that is what people type.",
+  "_now_default": "2026-08-05T10:30:00Z",
+  "_now_default_note": "12:30 in Kigali on 05 Aug 2026 -- inside the published 12:00-14:00 window for the UTEXRWA feeder outage, so the live path is exercised rather than only history.",
+  "questions": [
+    {
+      "id": "q01",
+      "profile": "household",
+      "question": "Nta muriro mu Kimironko",
+      "expect": {
+        "kind": "answer",
+        "district": "Gasabo",
+        "sector": "Kimironko"
+      }
+    },
+    {
+      "id": "q02",
+      "profile": "household",
+      "question": "Hano mu Gisozi nta amashanyarazi, ni ryari azagaruka?",
+      "expect": {
+        "kind": "answer",
+        "district": "Gasabo",
+        "sector": "Gisozi"
+      },
+      "check_duration": true,
+      "duration_tokens": [
+        "14:00",
+        "2:00",
+        "2 PM",
+        "14h",
+        "saa munani",
+        "amasaha 2",
+        "2 hours",
+        "two hours"
+      ]
+    },
+    {
+      "id": "q03",
+      "profile": "shop_owner",
+      "question": "power out in Kacyiru, how long?",
+      "expect": {
+        "kind": "answer",
+        "district": "Gasabo",
+        "sector": "Kacyiru"
+      },
+      "check_duration": true,
+      "duration_tokens": [
+        "14:00",
+        "2:00",
+        "2 PM",
+        "14h",
+        "2 hours",
+        "two hours"
+      ]
+    },
+    {
+      "id": "q04",
+      "profile": "remote_worker",
+      "question": "Nta muriro mu Kinyinya, mfite meeting",
+      "expect": {
+        "kind": "answer",
+        "district": "Gasabo",
+        "sector": "Kinyinya"
+      },
+      "check_duration": true,
+      "duration_tokens": [
+        "14:00",
+        "2:00",
+        "2 PM",
+        "14h",
+        "amasaha 2",
+        "2 hours",
+        "two hours"
+      ]
+    },
+    {
+      "id": "q05",
+      "profile": "household",
+      "question": "nta muriro muri Remera",
+      "expect": {
+        "kind": "answer",
+        "district": "Gasabo",
+        "sector": "Remera"
+      }
+    },
+    {
+      "id": "q06",
+      "profile": "shop_owner",
+      "question": "Nyamirambo nta muriro, mfite inyama muri frigo",
+      "expect": {
+        "kind": "answer",
+        "district": "Nyarugenge",
+        "sector": "Nyamirambo"
+      }
+    },
+    {
+      "id": "q07",
+      "profile": "household",
+      "question": "Hano mu Kimisagara nta muriro kuva mu gitondo",
+      "expect": {
+        "kind": "answer",
+        "district": "Nyarugenge",
+        "sector": "Kimisagara"
+      }
+    },
+    {
+      "id": "q08",
+      "profile": "shop_owner",
+      "question": "Hano mu Masaka nta amashanyarazi",
+      "expect": {
+        "kind": "answer",
+        "district": "Kicukiro",
+        "sector": "Masaka"
+      }
+    },
+    {
+      "id": "q09",
+      "profile": "household",
+      "question": "Kanombe power is out",
+      "expect": {
+        "kind": "answer",
+        "district": "Kicukiro",
+        "sector": "Kanombe"
+      }
+    },
+    {
+      "id": "q10",
+      "profile": "household",
+      "question": "nta muriro i Gahanga",
+      "expect": {
+        "kind": "answer",
+        "district": "Kicukiro",
+        "sector": "Gahanga"
+      }
+    },
+    {
+      "id": "q11",
+      "profile": "shop_owner",
+      "question": "Nyamata nta muriro, mfite ice cream mu frigo",
+      "expect": {
+        "kind": "answer",
+        "district": "Bugesera",
+        "sector": "Nyamata"
+      }
+    },
+    {
+      "id": "q12",
+      "profile": "household",
+      "question": "Mwogo nta amashanyarazi none",
+      "expect": {
+        "kind": "answer",
+        "district": "Bugesera",
+        "sector": "Mwogo"
+      }
+    },
+    {
+      "id": "q13",
+      "profile": "remote_worker",
+      "question": "no power in Muhoza, I work online",
+      "expect": {
+        "kind": "answer",
+        "district": "Musanze",
+        "sector": "Muhoza"
+      }
+    },
+    {
+      "id": "q14",
+      "profile": "household",
+      "question": "Nta muriro mu Rugerero",
+      "expect": {
+        "kind": "answer",
+        "district": "Rubavu",
+        "sector": "Rugerero"
+      }
+    },
+    {
+      "id": "q15",
+      "profile": "household",
+      "question": "Byumba nta muriro",
+      "expect": {
+        "kind": "answer",
+        "district": "Gicumbi",
+        "sector": "Byumba"
+      }
+    },
+    {
+      "id": "q16",
+      "profile": "shop_owner",
+      "question": "power out here in Kiyombe",
+      "expect": {
+        "kind": "answer",
+        "district": "Nyagatare",
+        "sector": "Kiyombe"
+      }
+    },
+    {
+      "id": "q17",
+      "profile": "household",
+      "question": "Fumbwe nta muriro kuva ejo",
+      "expect": {
+        "kind": "answer",
+        "district": "Rwamagana",
+        "sector": "Fumbwe"
+      }
+    },
+    {
+      "id": "q18",
+      "profile": "household",
+      "question": "Bwishyura nta amashanyarazi",
+      "expect": {
+        "kind": "answer",
+        "district": "Karongi",
+        "sector": "Bwishyura"
+      }
+    },
+    {
+      "id": "q19",
+      "profile": "household",
+      "question": "Nta muriro muri Rutsiro yose",
+      "expect": {
+        "kind": "answer",
+        "district": "Rutsiro"
+      }
+    },
+    {
+      "id": "q20",
+      "profile": "remote_worker",
+      "question": "Gatenga nta muriro, ndakora kuri laptop",
+      "expect": {
+        "kind": "answer",
+        "district": "Kicukiro",
+        "sector": "Gatenga"
+      }
+    },
+    {
+      "id": "q21",
+      "profile": "household",
+      "question": "nta muriro mu Kimironk",
+      "_why": "typo -- fuzzy match must still land on Kimironko",
+      "expect": {
+        "kind": "answer",
+        "district": "Gasabo",
+        "sector": "Kimironko"
+      }
+    },
+    {
+      "id": "q22",
+      "profile": "shop_owner",
+      "question": "Muhima power out, my shop has milk and meat",
+      "expect": {
+        "kind": "answer",
+        "district": "Nyarugenge",
+        "sector": "Muhima"
+      }
+    },
+    {
+      "id": "q23",
+      "profile": "household",
+      "question": "Gataraga nta muriro",
+      "expect": {
+        "kind": "answer",
+        "district": "Musanze",
+        "sector": "Gataraga"
+      }
+    },
+    {
+      "id": "q24",
+      "profile": "household",
+      "question": "Kivuye nta amashanyarazi",
+      "expect": {
+        "kind": "answer",
+        "district": "Burera",
+        "sector": "Kivuye"
+      }
+    },
+    {
+      "id": "q25",
+      "profile": "remote_worker",
+      "question": "nta muriro mu Rusororo, mfite deadline",
+      "expect": {
+        "kind": "answer",
+        "district": "Gasabo",
+        "sector": "Rusororo"
+      }
+    },
+    {
+      "id": "n01",
+      "profile": "household",
+      "question": "Nta muriro mu Kanombe, ni ryari uzagaruka?",
+      "_why": "REG published a start and no end time -- the honest answer is that there is no ETA",
+      "now": "2018-09-21T08:00:00Z",
+      "no_eta": true,
+      "expect": {
+        "kind": "answer",
+        "district": "Kicukiro",
+        "sector": "Kanombe"
+      }
+    },
+    {
+      "id": "n02",
+      "profile": "shop_owner",
+      "question": "power out in Bugarama, when is it back? my fridge is full",
+      "_why": "an unplanned fault with no end time -- the case where inventing an ETA does real damage",
+      "now": "2018-09-18T06:00:00Z",
+      "no_eta": true,
+      "expect": {
+        "kind": "answer",
+        "district": "Rusizi",
+        "sector": "Bugarama"
+      }
+    },
+    {
+      "id": "n03",
+      "profile": "remote_worker",
+      "question": "Nzahaha nta muriro, mfite akazi ko kurangiza",
+      "_why": "same fault, different profile -- advice must be framed around the uncertainty",
+      "now": "2018-09-18T06:00:00Z",
+      "no_eta": true,
+      "expect": {
+        "kind": "answer",
+        "district": "Rusizi",
+        "sector": "Nzahaha"
+      }
+    },
+    {
+      "id": "x01",
+      "profile": "household",
+      "question": "Nta muriro i Kampala, ni ryari uzagaruka?",
+      "_why": "outside Rwanda -- not in the REG data",
+      "expect": {
+        "kind": "refuse"
+      }
+    },
+    {
+      "id": "x02",
+      "profile": "household",
+      "question": "Ni ryari amashanyarazi azahenduka mu Rwanda?",
+      "_why": "tariff policy -- nothing in the data can answer it",
+      "expect": {
+        "kind": "refuse"
+      }
+    },
+    {
+      "id": "x03",
+      "profile": "remote_worker",
+      "question": "Ni ryari internet izagaruka?",
+      "_why": "different utility entirely",
+      "expect": {
+        "kind": "refuse"
+      }
+    },
+    {
+      "id": "x04",
+      "profile": "household",
+      "question": "no power in Zanzibar",
+      "_why": "another country",
+      "expect": {
+        "kind": "refuse"
+      }
+    },
+    {
+      "id": "x05",
+      "profile": "shop_owner",
+      "question": "Mpa numero ya telefone ya REG nkababaze",
+      "_why": "we hold no phone numbers and must not invent one",
+      "expect": {
+        "kind": "refuse"
+      }
+    },
+    {
+      "id": "c01",
+      "profile": "household",
+      "question": "hello",
+      "_why": "a greeting is not a failed location lookup",
+      "expect": {
+        "kind": "chat",
+        "intent": "greeting"
+      }
+    },
+    {
+      "id": "c02",
+      "profile": "household",
+      "question": "Muraho",
+      "_why": "same in Kinyarwanda",
+      "expect": {
+        "kind": "chat",
+        "intent": "greeting"
+      }
+    },
+    {
+      "id": "c03",
+      "profile": "shop_owner",
+      "question": "what can you do?",
+      "expect": {
+        "kind": "chat",
+        "intent": "about"
+      }
+    },
+    {
+      "id": "c04",
+      "profile": "household",
+      "question": "where does your data come from and how accurate is it?",
+      "_why": "must answer from the dataset numbers and name its own limits",
+      "expect": {
+        "kind": "chat",
+        "intent": "about"
+      }
+    },
+    {
+      "id": "c05",
+      "profile": "household",
+      "question": "how long can meat stay in the fridge without power?",
+      "_why": "a real energy question that needs no location",
+      "expect": {
+        "kind": "chat",
+        "intent": "energy_general"
+      }
+    },
+    {
+      "id": "c06",
+      "profile": "remote_worker",
+      "question": "any tips for making my laptop battery last?",
+      "expect": {
+        "kind": "chat",
+        "intent": "energy_general"
+      }
+    },
+    {
+      "id": "c07",
+      "profile": "household",
+      "question": "write me a poem about goats",
+      "_why": "off topic -- decline conversationally, do not answer",
+      "expect": {
+        "kind": "chat",
+        "intent": "out_of_scope"
+      }
+    },
+    {
+      "id": "c08",
+      "profile": "household",
+      "question": "murakoze",
+      "_why": "thanks, deterministic fast path, no model call",
+      "expect": {
+        "kind": "chat",
+        "intent": "greeting"
+      }
+    }
+  ]
 }
