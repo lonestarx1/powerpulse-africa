@@ -6,6 +6,7 @@ Run against `http://localhost:3000`. `now` defaults to 2026-08-05T10:30:00Z (12:
 | --- | --- | --- |
 | Location match accuracy | 28/28 (100%) | >= 24/25 |
 | Correct refusal rate | 5/5 (100%) | 5/5 |
+| Conversational turns routed correctly | 8/8 (100%) | 8/8 |
 | Duration-grounded advice | 3/3 (100%) | 3/3 |
 | Honest on no published ETA | 3/3 (100%) | 3/3 |
 | Answers with no invented clock time | 28/28 (100%) | 100% |
@@ -49,8 +50,16 @@ Run against `http://localhost:3000`. `now` defaults to 2026-08-05T10:30:00Z (12:
 | n02 | location | pass | power out in Bugarama, when is it back? my fridge is full | Bugarama, Rusizi |
 | n03 | no-eta | pass | Nzahaha nta muriro, mfite akazi ko kurangiza | none |
 | n03 | location | pass | Nzahaha nta muriro, mfite akazi ko kurangiza | Nzahaha, Rusizi |
-| x01 | refusal | pass | Nta muriro i Kampala, ni ryari uzagaruka? | unknown_place |
-| x02 | refusal | pass | Ni ryari amashanyarazi azahenduka mu Rwanda? | unknown_place |
-| x03 | refusal | pass | Ni ryari internet izagaruka? | unknown_place |
-| x04 | refusal | pass | no power in Zanzibar | unknown_place |
-| x05 | refusal | pass | Mpa numero ya telefone ya REG nkababaze | unknown_place |
+| x01 | refusal | pass | Nta muriro i Kampala, ni ryari uzagaruka? | chat/out_of_scope: asserts nothing |
+| x02 | refusal | pass | Ni ryari amashanyarazi azahenduka mu Rwanda? | chat/out_of_scope: asserts nothing |
+| x03 | refusal | pass | Ni ryari internet izagaruka? | chat/out_of_scope: asserts nothing |
+| x04 | refusal | pass | no power in Zanzibar | chat/out_of_scope: asserts nothing |
+| x05 | refusal | pass | Mpa numero ya telefone ya REG nkababaze | chat/out_of_scope: asserts nothing |
+| c01 | conversational | pass | hello | greeting: asserts nothing |
+| c02 | conversational | pass | Muraho | greeting: asserts nothing |
+| c03 | conversational | pass | what can you do? | about: asserts nothing |
+| c04 | conversational | pass | where does your data come from and how accurate is it? | about: asserts nothing |
+| c05 | conversational | pass | how long can meat stay in the fridge without power? | energy_general: asserts nothing |
+| c06 | conversational | pass | any tips for making my laptop battery last? | energy_general: asserts nothing |
+| c07 | conversational | pass | write me a poem about goats | out_of_scope: asserts nothing |
+| c08 | conversational | pass | murakoze | greeting: asserts nothing |
