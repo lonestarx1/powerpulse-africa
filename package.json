@@ -1,12 +1,13 @@
 {
-  "name": "nextapp",
+  "name": "umuriro",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "parse": "python3 scripts/parse_outages.py"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.26",

@@ -1,65 +1,255 @@
-import Image from "next/image";
+"use client";
+
+/**
+ * The demo surface: a 390px SMS-style thread.
+ *
+ * The production channel for this product is SMS/USSD -- the person we are
+ * building for has no power and is rationing phone battery. This web page is
+ * how we show it working, which is why it is shaped like a text conversation
+ * rather than a dashboard.
+ */
+
+import { useEffect, useRef, useState } from "react";
+
+const PROFILES = [
+  { id: "household", rw: "Urugo", en: "Household", emoji: "🏠" },
+  { id: "shop_owner", rw: "Ubucuruzi", en: "Shop", emoji: "🏪" },
+  { id: "remote_worker", rw: "Akazi ka interineti", en: "Remote work", emoji: "💻" },
+] as const;
+
+type Profile = (typeof PROFILES)[number]["id"];
+
+type Answer = {
+  status_line: string;
+  duration_line: string;
+  advice: string[];
+  confidence_note: string;
+  source: string;
+};
+
+type Candidate = { district: string; sector: string | null; label: string };
+
+type Bubble =
+  | { from: "user"; text: string }
+  | { from: "bot"; kind: "answer"; answer: Answer; place: string }
+  | { from: "bot"; kind: "text"; text: string; candidates?: Candidate[] }
+  | { from: "bot"; kind: "typing" };
+
+const SUGGESTIONS = [
+  "Nta muriro mu Kimironko",
+  "Power out in Gisozi, ni ryari izagaruka?",
+  "Hano mu Masaka nta amashanyarazi",
+];
 
 export default function Home() {
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [bubbles, setBubbles] = useState<Bubble[]>([]);
+  const [input, setInput] = useState("");
+  const [busy, setBusy] = useState(false);
+  const endRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("umuriro.profile") as Profile | null;
+    if (stored && PROFILES.some((p) => p.id === stored)) setProfile(stored);
+  }, []);
+
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [bubbles]);
+
+  function chooseProfile(id: Profile) {
+    localStorage.setItem("umuriro.profile", id);
+    setProfile(id);
+  }
+
+  async function send(text: string, place?: Candidate) {
+    if (!text.trim() || busy || !profile) return;
+    setInput("");
+    setBusy(true);
+    setBubbles((b) => [...b, { from: "user", text }, { from: "bot", kind: "typing" }]);
+
+    try {
+      const res = await fetch("/api/advise", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: text,
+          profile,
+          place: place ? { district: place.district, sector: place.sector } : undefined,
+        }),
+      });
+      const data = await res.json();
+
+      setBubbles((b) => {
+        const next = b.filter((x) => !("kind" in x && x.kind === "typing"));
+        if (!res.ok) {
+          return [
+            ...next,
+            { from: "bot", kind: "text", text: data.error ?? "Habaye ikibazo. Ongera ugerageze." },
+          ];
+        }
+        if (data.kind === "answer") {
+          const p = data.place.sector
+            ? `${data.place.sector}, ${data.place.district}`
+            : data.place.district;
+          return [...next, { from: "bot", kind: "answer", answer: data.answer, place: p }];
+        }
+        return [...next, { from: "bot", kind: "text", text: data.message, candidates: data.candidates }];
+      });
+    } catch {
+      setBubbles((b) => [
+        ...b.filter((x) => !("kind" in x && x.kind === "typing")),
+        { from: "bot", kind: "text", text: "Ntibishoboka guhuza na seriveri." },
+      ]);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  if (!profile) return <ProfilePicker onPick={chooseProfile} />;
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="mx-auto flex h-dvh w-full max-w-[390px] flex-col bg-[#0d1117] text-zinc-100">
+      <header className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+        <div>
+          <h1 className="text-base font-semibold tracking-tight">Umuriro</h1>
+          <p className="text-[11px] text-zinc-400">Amakuru ya REG · Kinyarwanda</p>
+        </div>
+        <button
+          onClick={() => {
+            localStorage.removeItem("umuriro.profile");
+            setProfile(null);
+          }}
+          className="rounded-full bg-white/10 px-3 py-1 text-[11px] text-zinc-300"
+        >
+          {PROFILES.find((p) => p.id === profile)?.rw}
+        </button>
+      </header>
+
+      <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
+        {bubbles.length === 0 && (
+          <div className="space-y-3 pt-4">
+            <p className="text-sm text-zinc-400">Nta muriro? Andika aho uri — urugero:</p>
+            {SUGGESTIONS.map((s) => (
+              <button
+                key={s}
+                onClick={() => send(s)}
+                className="block w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-sm text-zinc-200"
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {bubbles.map((b, i) =>
+          b.from === "user" ? (
+            <div key={i} className="flex justify-end">
+              <p className="max-w-[85%] rounded-2xl rounded-br-sm bg-amber-500 px-4 py-2 text-sm text-black">
+                {b.text}
+              </p>
+            </div>
+          ) : b.kind === "typing" ? (
+            <div key={i} className="flex gap-1 px-2 py-2">
+              {[0, 1, 2].map((d) => (
+                <span
+                  key={d}
+                  className="h-2 w-2 animate-bounce rounded-full bg-zinc-500"
+                  style={{ animationDelay: `${d * 120}ms` }}
+                />
+              ))}
+            </div>
+          ) : b.kind === "answer" ? (
+            <AnswerBubble key={i} answer={b.answer} place={b.place} />
+          ) : (
+            <div key={i} className="max-w-[90%] space-y-2">
+              <p className="rounded-2xl rounded-bl-sm bg-white/10 px-4 py-2 text-sm">{b.text}</p>
+              {b.candidates?.map((c) => (
+                <button
+                  key={c.label}
+                  onClick={() => send(c.label, c)}
+                  className="mr-2 inline-block rounded-full border border-amber-500/40 px-3 py-1 text-xs text-amber-300"
+                >
+                  {c.label}
+                </button>
+              ))}
+            </div>
+          ),
+        )}
+        <div ref={endRef} />
+      </div>
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          send(input);
+        }}
+        className="flex gap-2 border-t border-white/10 px-3 py-3"
+      >
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Andika aho uri…"
+          className="flex-1 rounded-full bg-white/10 px-4 py-2 text-sm outline-none placeholder:text-zinc-500"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        <button
+          type="submit"
+          disabled={busy || !input.trim()}
+          className="rounded-full bg-amber-500 px-4 py-2 text-sm font-medium text-black disabled:opacity-40"
+        >
+          Ohereza
+        </button>
+      </form>
+    </div>
+  );
+}
+
+function AnswerBubble({ answer, place }: { answer: Answer; place: string }) {
+  return (
+    <div className="max-w-[90%] space-y-2 rounded-2xl rounded-bl-sm bg-white/10 px-4 py-3 text-sm">
+      <p className="font-medium text-amber-300">{place}</p>
+      <p>{answer.status_line}</p>
+      <p className="text-zinc-300">{answer.duration_line}</p>
+      <ul className="space-y-1.5 pt-1">
+        {answer.advice.map((a, i) => (
+          <li key={i} className="flex gap-2">
+            <span className="text-amber-400">•</span>
+            <span>{a}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="pt-1 text-[11px] italic text-zinc-400">{answer.confidence_note}</p>
+      {/* Visible grounding: every answer names the record it came from. */}
+      <p className="border-t border-white/10 pt-2 text-[11px] text-zinc-500">{answer.source}</p>
+    </div>
+  );
+}
+
+function ProfilePicker({ onPick }: { onPick: (id: Profile) => void }) {
+  return (
+    <div className="mx-auto flex h-dvh w-full max-w-[390px] flex-col justify-center gap-6 bg-[#0d1117] px-6 text-zinc-100">
+      <div>
+        <h1 className="text-2xl font-semibold tracking-tight">Umuriro</h1>
+        <p className="mt-2 text-sm text-zinc-400">
+          Uri nde? Bituma inama zihuye n&apos;ibyo ukeneye.
+        </p>
+      </div>
+      <div className="space-y-3">
+        {PROFILES.map((p) => (
+          <button
+            key={p.id}
+            onClick={() => onPick(p.id)}
+            className="flex w-full items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-left"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+            <span className="text-xl">{p.emoji}</span>
+            <span>
+              <span className="block text-sm font-medium">{p.rw}</span>
+              <span className="block text-xs text-zinc-500">{p.en}</span>
+            </span>
+          </button>
+        ))}
+      </div>
+      <p className="text-[11px] text-zinc-500">Nta konti. Nta makuru bwite abikwa kuri seriveri.</p>
     </div>
   );
 }

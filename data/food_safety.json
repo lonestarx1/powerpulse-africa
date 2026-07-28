@@ -1,0 +1,50 @@
+{
+  "_note": "Thresholds live here, not in the model's head. The LLM explains and personalises them; it never calculates them. Conservative by design: we bias toward wasted food over foodborne illness.",
+  "_source": "USDA FSIS 'Keeping Food Safe During an Emergency' + WHO five keys to safer food. Adapted to unopened appliances at Rwandan ambient temperatures (20-30C).",
+  "refrigerator": {
+    "safe_hours_unopened": 4,
+    "note_rw": "Frigo idafunguwe ikomeza gukonja amasaha 4.",
+    "note_en": "An unopened fridge holds a safe temperature for about 4 hours."
+  },
+  "freezer_full": {
+    "safe_hours_unopened": 48,
+    "note_rw": "Firigo yuzuye idafunguwe imara amasaha 48.",
+    "note_en": "A full freezer holds for about 48 hours if the door stays shut."
+  },
+  "freezer_half": {
+    "safe_hours_unopened": 24,
+    "note_rw": "Firigo yuzuyemo kimwe cya kabiri imara amasaha 24.",
+    "note_en": "A half-full freezer holds for about 24 hours."
+  },
+  "rules": [
+    {
+      "id": "keep_closed",
+      "rw": "Ntukingure frigo. Buri gihe uyifungura, ubushyuhe burazamuka kandi igihe kigabanuka.",
+      "en": "Keep the door shut. Every opening raises the temperature and shortens the safe window."
+    },
+    {
+      "id": "discard_above_threshold",
+      "rw": "Nibirenza igihe cyavuzwe, birajugunywa. Nta 'birashobora kuba byiza'.",
+      "en": "Past the threshold, discard it. There is no 'probably fine'."
+    },
+    {
+      "id": "never_taste",
+      "rw": "Ntugerageze kuryoza ngo umenye ko byangiritse.",
+      "en": "Never taste food to decide whether it is still safe."
+    },
+    {
+      "id": "high_risk_items",
+      "rw": "Inyama, amafi, amata, amagi, ibiryo byatetswe n'ibisigaye ni byo bihita byangirika mbere.",
+      "en": "Meat, fish, milk, eggs, and cooked leftovers spoil first."
+    }
+  ],
+  "high_risk_terms": [
+    "inyama", "meat", "amafi", "fish", "amata", "milk", "yogurt", "yaourt",
+    "amagi", "eggs", "ice cream", "glace", "cheese", "fromage", "ibisigaye",
+    "leftovers", "chicken", "inkoko", "sausage", "saucisse"
+  ],
+  "framing": {
+    "rw": "Ubusanzwe kutagira umuriro kw'amasaha 2 ntibyangiza ibiryo. Impungenge zitangira ku gihe kirekire kandi kitazwi.",
+    "en": "A typical 2-hour planned outage does not spoil food. The risk starts with long or open-ended outages."
+  }
+}
