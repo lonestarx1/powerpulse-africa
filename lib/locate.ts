@@ -111,7 +111,7 @@ export function locate(message: string): LocateResult {
   }
 
   const candidates = [...found.values()].sort(
-    (a, b) => b.score - a.score || b.count - a.count,
+    (a, b) => b.score - a.score || b.confirmedCount - a.confirmedCount || b.count - a.count,
   );
 
   if (candidates.length === 0) {
@@ -119,8 +119,15 @@ export function locate(message: string): LocateResult {
   }
 
   const best = candidates[0];
+  // A rival only counts if REG actually placed the name in that district. The
+  // parser emits low-confidence copies of a sector across every district named
+  // on an unsplittable row; those must not manufacture ambiguity.
   const rivals = candidates.filter(
-    (c) => c !== best && c.score >= best.score - 0.02 && c.key === best.key,
+    (c) =>
+      c !== best &&
+      c.key === best.key &&
+      c.score >= best.score - 0.02 &&
+      c.confirmedCount > 0,
   );
 
   // Ambiguous when a different district claims the same name with comparable

@@ -7,6 +7,7 @@ const RequestSchema = z.object({
   message: z.string().min(1).max(500),
   profile: z.enum(PROFILES),
   coldItems: z.array(z.string().max(60)).max(12).optional(),
+  language: z.enum(["rw", "en"]).optional(),
   place: z
     .object({ district: z.string(), sector: z.string().nullable() })
     .optional(),

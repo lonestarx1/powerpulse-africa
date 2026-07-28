@@ -53,6 +53,12 @@ export type AdviseRequest = {
   message: string;
   profile: Profile;
   coldItems?: string[];
+  /**
+   * The language the UI is in. When set it wins over detection -- if someone
+   * has put the app in English they want the answer in English, whatever
+   * language they happened to type the place name in.
+   */
+  language?: "rw" | "en";
   /** Set by the UI when the user picked from the disambiguation list. */
   place?: { district: string; sector: string | null };
   /** Injectable so the eval harness and the demo agree on "now". */
@@ -110,12 +116,13 @@ function detectLanguage(message: string): "rw" | "en" {
   return rw >= en ? "rw" : "en";
 }
 
-function label(c: { district: string; sector: string | null }): string {
-  return c.sector ? `${c.sector}, ${c.district}` : `${c.district} (akarere kose)`;
+function label(c: { district: string; sector: string | null }, lang: "rw" | "en" = "rw"): string {
+  if (c.sector) return `${c.sector}, ${c.district}`;
+  return lang === "rw" ? `${c.district} (akarere kose)` : `${c.district} (whole district)`;
 }
 
 function clarifyMessage(candidates: Candidate[], lang: "rw" | "en"): string {
-  const list = candidates.map(label).join(" / ");
+  const list = candidates.map((c) => label(c, lang)).join(" / ");
   return lang === "rw"
     ? `Sinabashije kumenya neza aho uri. Ni hehe muri aha: ${list}?`
     : `I could not pin down your location. Which of these do you mean: ${list}?`;
@@ -148,7 +155,7 @@ async function extractPlaceWithModel(message: string): Promise<string | null> {
 
 export async function advise(req: AdviseRequest): Promise<AdviseResponse> {
   const now = req.now ?? new Date();
-  const lang = detectLanguage(req.message);
+  const lang = req.language ?? detectLanguage(req.message);
 
   let place = req.place ?? null;
   let needsConfirmation = false;
@@ -178,7 +185,7 @@ export async function advise(req: AdviseRequest): Promise<AdviseResponse> {
         candidates: candidates.map((c) => ({
           district: c.district,
           sector: c.sector,
-          label: label(c),
+          label: label(c, lang),
         })),
       };
     }

@@ -18,6 +18,45 @@ const PROFILES = [
 ] as const;
 
 type Profile = (typeof PROFILES)[number]["id"];
+type Lang = "rw" | "en";
+
+/**
+ * Kinyarwanda is the default and English is a toggle, not the other way round.
+ * The language also goes to the API: if you have put the app in English you
+ * want the answer in English, whatever language you typed the place name in.
+ */
+const COPY = {
+  rw: {
+    tagline: "Amakuru ya REG · Kinyarwanda",
+    who: "Uri nde? Bituma inama zihuye n'ibyo ukeneye.",
+    noAccount: "Nta konti. Nta makuru bwite abikwa kuri seriveri.",
+    prompt: "Nta muriro? Andika aho uri — urugero:",
+    placeholder: "Andika aho uri…",
+    send: "Ohereza",
+    failed: "Habaye ikibazo. Ongera ugerageze.",
+    offline: "Ntibishoboka guhuza na seriveri.",
+    suggestions: [
+      "Nta muriro mu Kimironko",
+      "Hano mu Masaka nta amashanyarazi",
+      "Ni ryari umuriro uzagaruka i Gisozi?",
+    ],
+  },
+  en: {
+    tagline: "REG outage records · English",
+    who: "Who are you? It changes the advice you get.",
+    noAccount: "No account. Nothing personal is stored on the server.",
+    prompt: "Power out? Type where you are — for example:",
+    placeholder: "Where are you?",
+    send: "Send",
+    failed: "Something went wrong. Try again.",
+    offline: "Could not reach the server.",
+    suggestions: [
+      "Power out in Kimironko",
+      "No electricity here in Masaka",
+      "When will power come back in Gisozi?",
+    ],
+  },
+} as const;
 
 type Answer = {
   status_line: string;
@@ -35,23 +74,27 @@ type Bubble =
   | { from: "bot"; kind: "text"; text: string; candidates?: Candidate[] }
   | { from: "bot"; kind: "typing" };
 
-const SUGGESTIONS = [
-  "Nta muriro mu Kimironko",
-  "Power out in Gisozi, ni ryari izagaruka?",
-  "Hano mu Masaka nta amashanyarazi",
-];
-
 export default function Home() {
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [lang, setLang] = useState<Lang>("rw");
   const [bubbles, setBubbles] = useState<Bubble[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
+  const t = COPY[lang];
 
   useEffect(() => {
     const stored = localStorage.getItem("umuriro.profile") as Profile | null;
     if (stored && PROFILES.some((p) => p.id === stored)) setProfile(stored);
+    const storedLang = localStorage.getItem("umuriro.lang") as Lang | null;
+    if (storedLang === "rw" || storedLang === "en") setLang(storedLang);
   }, []);
+
+  function toggleLang() {
+    const next: Lang = lang === "rw" ? "en" : "rw";
+    localStorage.setItem("umuriro.lang", next);
+    setLang(next);
+  }
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -75,6 +118,7 @@ export default function Home() {
         body: JSON.stringify({
           message: text,
           profile,
+          language: lang,
           place: place ? { district: place.district, sector: place.sector } : undefined,
         }),
       });
@@ -83,10 +127,7 @@ export default function Home() {
       setBubbles((b) => {
         const next = b.filter((x) => !("kind" in x && x.kind === "typing"));
         if (!res.ok) {
-          return [
-            ...next,
-            { from: "bot", kind: "text", text: data.error ?? "Habaye ikibazo. Ongera ugerageze." },
-          ];
+          return [...next, { from: "bot", kind: "text", text: data.error ?? t.failed }];
         }
         if (data.kind === "answer") {
           const p = data.place.sector
@@ -99,38 +140,41 @@ export default function Home() {
     } catch {
       setBubbles((b) => [
         ...b.filter((x) => !("kind" in x && x.kind === "typing")),
-        { from: "bot", kind: "text", text: "Ntibishoboka guhuza na seriveri." },
+        { from: "bot", kind: "text", text: t.offline },
       ]);
     } finally {
       setBusy(false);
     }
   }
 
-  if (!profile) return <ProfilePicker onPick={chooseProfile} />;
+  if (!profile) return <ProfilePicker onPick={chooseProfile} lang={lang} onToggleLang={toggleLang} />;
 
   return (
     <div className="mx-auto flex h-dvh w-full max-w-[390px] flex-col bg-[#0d1117] text-zinc-100">
       <header className="flex items-center justify-between border-b border-white/10 px-4 py-3">
         <div>
           <h1 className="text-base font-semibold tracking-tight">Umuriro</h1>
-          <p className="text-[11px] text-zinc-400">Amakuru ya REG · Kinyarwanda</p>
+          <p className="text-[11px] text-zinc-400">{t.tagline}</p>
         </div>
-        <button
-          onClick={() => {
-            localStorage.removeItem("umuriro.profile");
-            setProfile(null);
-          }}
-          className="rounded-full bg-white/10 px-3 py-1 text-[11px] text-zinc-300"
-        >
-          {PROFILES.find((p) => p.id === profile)?.rw}
-        </button>
+        <div className="flex items-center gap-2">
+          <LangToggle lang={lang} onToggle={toggleLang} />
+          <button
+            onClick={() => {
+              localStorage.removeItem("umuriro.profile");
+              setProfile(null);
+            }}
+            className="rounded-full bg-white/10 px-3 py-1 text-[11px] text-zinc-300"
+          >
+            {PROFILES.find((p) => p.id === profile)?.[lang]}
+          </button>
+        </div>
       </header>
 
       <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
         {bubbles.length === 0 && (
           <div className="space-y-3 pt-4">
-            <p className="text-sm text-zinc-400">Nta muriro? Andika aho uri — urugero:</p>
-            {SUGGESTIONS.map((s) => (
+            <p className="text-sm text-zinc-400">{t.prompt}</p>
+            {t.suggestions.map((s) => (
               <button
                 key={s}
                 onClick={() => send(s)}
@@ -189,7 +233,7 @@ export default function Home() {
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Andika aho uri…"
+          placeholder={t.placeholder}
           className="flex-1 rounded-full bg-white/10 px-4 py-2 text-sm outline-none placeholder:text-zinc-500"
         />
         <button
@@ -197,7 +241,7 @@ export default function Home() {
           disabled={busy || !input.trim()}
           className="rounded-full bg-amber-500 px-4 py-2 text-sm font-medium text-black disabled:opacity-40"
         >
-          Ohereza
+          {t.send}
         </button>
       </form>
     </div>
@@ -225,14 +269,36 @@ function AnswerBubble({ answer, place }: { answer: Answer; place: string }) {
   );
 }
 
-function ProfilePicker({ onPick }: { onPick: (id: Profile) => void }) {
+function LangToggle({ lang, onToggle }: { lang: Lang; onToggle: () => void }) {
+  return (
+    <button
+      onClick={onToggle}
+      aria-label={lang === "rw" ? "Switch to English" : "Hindura ujye mu Kinyarwanda"}
+      className="rounded-full border border-white/15 px-2.5 py-1 text-[11px] font-medium text-zinc-300"
+    >
+      {lang === "rw" ? "EN" : "RW"}
+    </button>
+  );
+}
+
+function ProfilePicker({
+  onPick,
+  lang,
+  onToggleLang,
+}: {
+  onPick: (id: Profile) => void;
+  lang: Lang;
+  onToggleLang: () => void;
+}) {
+  const t = COPY[lang];
   return (
     <div className="mx-auto flex h-dvh w-full max-w-[390px] flex-col justify-center gap-6 bg-[#0d1117] px-6 text-zinc-100">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Umuriro</h1>
-        <p className="mt-2 text-sm text-zinc-400">
-          Uri nde? Bituma inama zihuye n&apos;ibyo ukeneye.
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">Umuriro</h1>
+          <p className="mt-2 text-sm text-zinc-400">{t.who}</p>
+        </div>
+        <LangToggle lang={lang} onToggle={onToggleLang} />
       </div>
       <div className="space-y-3">
         {PROFILES.map((p) => (
@@ -243,13 +309,15 @@ function ProfilePicker({ onPick }: { onPick: (id: Profile) => void }) {
           >
             <span className="text-xl">{p.emoji}</span>
             <span>
-              <span className="block text-sm font-medium">{p.rw}</span>
-              <span className="block text-xs text-zinc-500">{p.en}</span>
+              <span className="block text-sm font-medium">{p[lang]}</span>
+              <span className="block text-xs text-zinc-500">
+                {lang === "rw" ? p.en : p.rw}
+              </span>
             </span>
           </button>
         ))}
       </div>
-      <p className="text-[11px] text-zinc-500">Nta konti. Nta makuru bwite abikwa kuri seriveri.</p>
+      <p className="text-[11px] text-zinc-500">{t.noAccount}</p>
     </div>
   );
 }

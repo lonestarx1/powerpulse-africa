@@ -67,6 +67,13 @@ export type Place = {
   key: string;
   /** How many records mention it -- used to break ties toward the common reading. */
   count: number;
+  /**
+   * Of those, how many came from a row where the district was certain.
+   * "Masaka" appears under Kicukiro (14 confirmed rows) and also under Gasabo
+   * and Rwamagana purely because a multi-district row could not be split. Only
+   * confirmed readings should make a name look ambiguous.
+   */
+  confirmedCount: number;
 };
 
 function buildPlaces(): Place[] {
@@ -74,18 +81,36 @@ function buildPlaces(): Place[] {
   const byDistrict = new Map<string, Place>();
 
   for (const o of outages) {
+    const confirmed = o.district_inferred ? 0 : 1;
+
     const d = byDistrict.get(o.district_key);
-    if (d) d.count += 1;
-    else byDistrict.set(o.district_key, { district: o.district, sector: null, key: o.district_key, count: 1 });
+    if (d) {
+      d.count += 1;
+      d.confirmedCount += confirmed;
+    } else {
+      byDistrict.set(o.district_key, {
+        district: o.district, sector: null, key: o.district_key,
+        count: 1, confirmedCount: confirmed,
+      });
+    }
 
     if (o.sector === "*") continue;
     const id = `${o.district_key}/${o.sector_key}`;
     const s = bySector.get(id);
-    if (s) s.count += 1;
-    else bySector.set(id, { district: o.district, sector: o.sector, key: o.sector_key, count: 1 });
+    if (s) {
+      s.count += 1;
+      s.confirmedCount += confirmed;
+    } else {
+      bySector.set(id, {
+        district: o.district, sector: o.sector, key: o.sector_key,
+        count: 1, confirmedCount: confirmed,
+      });
+    }
   }
 
-  return [...bySector.values(), ...byDistrict.values()].sort((a, b) => b.count - a.count);
+  return [...bySector.values(), ...byDistrict.values()].sort(
+    (a, b) => b.confirmedCount - a.confirmedCount || b.count - a.count,
+  );
 }
 
 export const places: Place[] = buildPlaces();
