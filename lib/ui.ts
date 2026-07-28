@@ -254,3 +254,65 @@ export function fmtReason(category: string | null): string {
   if (!category) return "—";
   return category.charAt(0).toUpperCase() + category.slice(1);
 }
+
+/* ------------------------------------------------------------------ picker */
+
+/**
+ * One tappable place in the location picker.
+ *
+ * The whole index (about 1,000 of these) is handed to the browser so typing
+ * filters instantly instead of round-tripping. It carries a precomputed match
+ * key rather than the record it came from -- `lib/outages` imports 2.5MB of
+ * JSON and must never be reachable from a client component.
+ */
+export type PlaceOption = {
+  district: string;
+  /** null for a district-wide place. */
+  sector: string | null;
+  /** "<district key> <sector key>", accent-free and alphanumeric. */
+  match: string;
+  count: number;
+};
+
+/**
+ * Accent-free, lowercase, alphanumeric. Mirrors normKey() in lib/outages and
+ * norm() in the scraper; duplicated here only so the browser can run it.
+ * The space separator in a PlaceOption's `match` survives because a normalised
+ * query never contains one -- so a query can't match across the boundary
+ * between a district and its sector.
+ */
+export function normQuery(text: string): string {
+  return text
+    .normalize("NFKD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+}
+
+/**
+ * Substring search over the place index, prefix matches first.
+ *
+ * `options` arrives sorted by how confidently REG named the place, so a stable
+ * partition is all the ranking we need: typing "kicu" surfaces Kicukiro before
+ * a sector that merely contains those letters, and everything else keeps the
+ * order the data justifies.
+ */
+export function filterPlaces(
+  options: readonly PlaceOption[],
+  query: string,
+  limit = 14,
+): PlaceOption[] {
+  const q = normQuery(query);
+  if (!q) return [];
+
+  const prefix: PlaceOption[] = [];
+  const rest: PlaceOption[] = [];
+
+  for (const o of options) {
+    if (o.match.startsWith(q) || o.match.includes(` ${q}`)) prefix.push(o);
+    else if (o.match.includes(q)) rest.push(o);
+    if (prefix.length >= limit) break;
+  }
+
+  return [...prefix, ...rest].slice(0, limit);
+}

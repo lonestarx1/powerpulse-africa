@@ -71,7 +71,9 @@ type Copy = {
   sectorSub: string;
   wholeDistrict: string;
   searchPlaceholder: string;
+  sectorPlaceholder: string;
   find: string;
+  clearSearch: string;
   records: string;
   noMatch: string;
 
@@ -169,7 +171,9 @@ const en: Copy = {
   sectorSub: "Sector names repeat across districts, so we carry both.",
   wholeDistrict: "The whole district",
   searchPlaceholder: "Sector or district…",
+  sectorPlaceholder: "Filter sectors…",
   find: "Find",
+  clearSearch: "Clear",
   records: "records",
   noMatch: "No place in the published records matches that. Try a sector or district name.",
 
@@ -269,7 +273,11 @@ const rw: Copy = {
   sectorSub: "Amazina y'imirenge arisubiramo mu turere, ni yo mpamvu twandika byombi.",
   wholeDistrict: "Akarere kose",
   searchPlaceholder: "Umurenge cyangwa akarere…",
+  // NEEDS A NATIVE READ
+  sectorPlaceholder: "Shakisha umurenge…",
   find: "Shakisha",
+  // NEEDS A NATIVE READ
+  clearSearch: "Siba",
   records: "inyandiko",
   noMatch: "Nta hantu mu makuru yatangajwe habonetse. Gerageza izina ry'umurenge cyangwa akarere.",
 
