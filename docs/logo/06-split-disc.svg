@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <mask id="pp-split-disc" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+    <rect width="64" height="64" fill="#000"/>
+    <circle cx="32" cy="32" r="28" fill="#fff"/>
+    <path d="M40-4 23 30l18 4-15 34" fill="none" stroke="#000" stroke-width="9" stroke-linejoin="round"/>
+  </mask>
+  <rect width="64" height="64" fill="currentColor" mask="url(#pp-split-disc)"/>
+</svg>

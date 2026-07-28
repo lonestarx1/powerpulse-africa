@@ -1,4 +1,6 @@
-# Umuriro — Build Plan
+# PowerPulse — Build Plan
+
+*Written this morning as “Umuriro”; the name was settled at 14:20. Kept as the plan of record, not rewritten after the fact — where the build diverged from it, the build is what shipped.*
 
 **Team:** Token Titans (5 people)
 **Event:** Frontiers GenAI Hackathon, ALX Kigali, 28 July 2026
