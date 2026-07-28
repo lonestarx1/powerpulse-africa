@@ -1,0 +1,777 @@
+{
+ "flagged": 55,
+ "dropped": 0,
+ "of_rows": 502,
+ "failures": [
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "25th June 2026",
+    "time": "12:00 PM - 02:00 PM",
+    "district_affected": "Ngororero, Muhanga, Nyabihu & Kicukiro",
+    "sector_areas": "Bwira, Gatumba, Hindiro, Kabaya, Kageyo, Kavumu, Matyazo, Muhanda, Muhororo, Ngororero, Sovu, Ndaro in Ngororero; Kibangu, Nyabinoni in Muhanga; Karago, Rambura, Jomba, Shyira in Nyabihu; Kanombe, Niboye in Kicukiro.",
+    "reason": "Maintenance and extension works on \"Rusasa\", \"RAB\" & \"Samuduha\" feeders",
+    "status": "Past",
+    "page_number": 4,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=4&cHash=9e8a9d5ca042510bbbca2301d6135c72"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "24th June 2026",
+    "time": "11:00 AM - 02:00 PM",
+    "district_affected": "Rulindo, Burera, Gakenke, Musanze & Nyabihu.",
+    "sector_areas": "Bushoki, Base, Tumba, Rukozo, Cyungo in Rulindo; Nemba, Ruhunde in Burera; Gashenyi, Gakenke, Mugunga, Rusasa, Janja in Gakenke; Busogo in Musanze; Rugera, Shyira in Nyabihu.",
+    "reason": "Maintenance and extension works on \"Base\" feeder \"Base\" T-off & \"Nyabihu\" feeder \"Cyinkware\" T-off",
+    "status": "Past",
+    "page_number": 5,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=5&cHash=eac6b1cc968810490986caa1cc864fdf"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "22nd June 2026",
+    "time": "12:00 PM - 02:00 PM",
+    "district_affected": "Kicukiro & Gasabo",
+    "sector_areas": "Niboyi, Kicukiro in Kicukiro; Remera, Kimihurura in Gasabo.",
+    "reason": "Extension and upgrading works on \"Sonatube\"",
+    "status": "Past",
+    "page_number": 5,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=5&cHash=eac6b1cc968810490986caa1cc864fdf"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "23rd October 2024",
+    "time": "11:00 AM - 01:00 PM",
+    "district_affected": "Gasabo, Kicukiro",
+    "sector_areas": "Ndera in Gasabo; Nyarugunga and Kanombe in Kucukiro.",
+    "reason": "Maintenance works on Mulindi feeder from Ndera Substation and Mulindi feeder from Gasogi Substation",
+    "status": "Past",
+    "page_number": 12,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=12&cHash=aa5567291026f7c83e57722bdc5f473f"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "30th April 2025",
+    "time": "11:00 AM - 04:00 PM",
+    "district_affected": "Kamonyi & Rwamagana",
+    "sector_areas": "Mugina, Nyamiyaga in Kamonyi; Munyaga, Gishari, Munyiginya, Muhazi, Kigabiro, Rubona, Mwurire in Rwamagana.",
+    "reason": "Maintenance works on Ntongwe feeder Mukunguri t-off & Extension works on Rwamagana feeder",
+    "status": "Past",
+    "page_number": 13,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=13&cHash=d0730fd020d344913c4e2f7ee883eace"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "07th May 2025",
+    "time": "10:00 AM - 04:00 PM",
+    "district_affected": "Nyarugenge, Kimonyi & Muhanga",
+    "sector_areas": "Kigali in Nyarugenge; Rukoma, Runda, Rugarika, Gacurabwenge, Musambira, Ngamba, Kayenzi, Karama, Nyarubaka, Kayumba in Kamonyi",
+    "reason": "Maintenance on Kiyumba feeder",
+    "status": "Past",
+    "page_number": 13,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=13&cHash=d0730fd020d344913c4e2f7ee883eace"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "22nd November 2025",
+    "time": "09:00 AM - 10:00 AM",
+    "district_affected": "Gicumbi, Burera & Nyagatare",
+    "sector_areas": "All sectors in Gicumbi, Bungwe, Gatebe, Kivuye in Burera; Kiyombe",
+    "reason": "Maintenance works on Gatuna Substation",
+    "status": "Past",
+    "page_number": 24,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=24&cHash=1385b17acb7457fa2e4b295f0388789c"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "06th November 2025",
+    "time": "11:00 AM - 02:00 PM",
+    "district_affected": "Rusizi, Kayonza, Ngoma & Kirehe",
+    "sector_areas": "Kampembe, Gihundwe, Nkanka, Nkungu, Giheke, Nkombo, Mururu in Rusizi; Murama in Kayonza, All sectors in Ngoma; All sectors in Kirehe except Nyarubuye, Ntasho and Mpanga",
+    "reason": "Maintenance works on \"Shagasha\" and \"Zaza\" feeders",
+    "status": "Past",
+    "page_number": 29,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=29&cHash=c9d21f8dde01a930c78af7438a2932f1"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "03rd October 2024",
+    "time": "10:00 AM - 04:00 PM",
+    "district_affected": "Rusizi, Kicukiro, Gicumbi",
+    "sector_areas": "Kampembe, Gihundwe, Nkanka, Nkombo, Nkungu, Giheke and Mururu in Rusizi; Kanombe in Kicukiro;Mukarange, Bwisige, Mukure,Ruvune,Giti,Muko,Rushaki,Rwamiko and Rutare in Gicumbi.",
+    "reason": "Maintenance works on Shagasha feeder, Samuduha feeder, Rubirizi t-off and Ngarama feeder Bwisige t-off",
+    "status": "Past",
+    "page_number": 37,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=37&cHash=7921d0f8973c15b6741582686ab83af5"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "26th October 2023",
+    "time": "12:00 PM - 01:00 PM",
+    "district_affected": "Burera, Musanze, Gakenke",
+    "sector_areas": "Rugendabari in Burera;Rwaza in Musanze;Gakenke, Nemba, Kamubuga in Gakenke.",
+    "reason": "Extension works on Gakenke feeder",
+    "status": "Past",
+    "page_number": 45,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=45&cHash=fa00cb1a04f4a1305b92d6eb1d1c73e9"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "29th September 2023",
+    "time": "09:00 AM - 12:00 PM",
+    "district_affected": "Kamonyi, Nyarugenge and Gasabo",
+    "sector_areas": "Runda in Kamonyi; Kigali in Nyarugenge; Jabana and Nyabugogo in Gasabo.",
+    "reason": "Maintenance works on Abattoir feeder from Nzove Substation",
+    "status": "Past",
+    "page_number": 46,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=46&cHash=49f7305eafc52110dcb24a15877b60f0"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "27th September 2023",
+    "time": "10:00 AM - 01:00 PM",
+    "district_affected": "Gatsibo, Nyagatare, Gicumbi",
+    "sector_areas": "Ngarama, Gatsibo, Nyagihanga in Gatsibo; Mimuri in Nyagatare; Bwisige, Ruvune, Giti, Muko, Bukure, Rwamiko, Rutare, Rukomo, Nyamiyaga, Rushaki, Mukarange and Mutete in Gicumbi.",
+    "reason": "Maintenance works on Ngarama feeder",
+    "status": "Past",
+    "page_number": 47,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=47&cHash=809aeb67b2396afe7d9931a8318ef191"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "05th April 2023",
+    "time": "11:00 AM - 01:00 PM",
+    "district_affected": "Gicumbi, Gatsibo and Nyagatare",
+    "sector_areas": "Ngarama, Gatsibo and Nyagihanga in gatsibo; Kiyombe, Mukama, Mimuri, Gatunda and Karangazi in Nyagaratare; Bwisige, Ruvune, Giti, Muko, Bukure, Rwamiko, Rutare, rukomo, Nyamiyaga, Rushaki, Mukarange and Mutete in Gicumbi.",
+    "reason": "Maintenance of Ngarama Feeder",
+    "status": "Past",
+    "page_number": 50,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=50&cHash=be49f833eb2233382f3659c2bbf782d1"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "05th April 2023",
+    "time": "12:00 PM - 03:00 PM",
+    "district_affected": "Gakenke and Musanze",
+    "sector_areas": "Kivuruga, Cyabingo, Busengo, Janja, Mataba, Rusasa and Muzo in Gakenke; Remera, Rwaza and Gashaki in Musanze.",
+    "reason": "Maintenance on Janja Remera feeder",
+    "status": "Past",
+    "page_number": 51,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=51&cHash=802f7d64d57a1dbfa14d3ac13a6c9798"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "22nd March 2023",
+    "time": "11:00 AM - 02:00 PM",
+    "district_affected": "Ngoma, Kayonza, Kirehe",
+    "sector_areas": "all Sectors of Ngoma District and some parts of Nyarubuye and Murama Sectors in Kayonza District, also the Sectors of Kirehe District except Nasho and Mpanga Sectors",
+    "reason": "Maintenance works on Zaza feeder",
+    "status": "Past",
+    "page_number": 52,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=52&cHash=d5678a69ed97b6a20474496a6fd8becd"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "23rd February 2023",
+    "time": "12:00 PM - 02:00 PM",
+    "district_affected": "Burera & some parts of Kisoro in Uganda",
+    "sector_areas": "Some parts of Cyanika Sector in Burera District and some parts of Kisoro in Uganda",
+    "reason": "Extension works on Cyanika feeder Kidaho t-off",
+    "status": "Past",
+    "page_number": 54,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=54&cHash=89dc6b35f19a20bdbaea406787dade0c"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "27th November 2022",
+    "time": "02:00 PM - 03:00 PM",
+    "district_affected": "Nyabihu, Musanze",
+    "sector_areas": "Kintobo & Mukamira in Nyabihu; Busogo, Gataraga, Kimonyi, Musanze, Shingiro in Musanze.",
+    "reason": "Maintenance Works on \"Camp-Belge\" feeder",
+    "status": "Past",
+    "page_number": 55,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=55&cHash=12a6922f26aeca81ab385b70cc70dc82"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "26th November 2022",
+    "time": "10:00 AM - 12:00 PM",
+    "district_affected": "Kamonyi, Muhanga, Ruhango",
+    "sector_areas": "All Sectors of Muhanga;Mbuye, Byimana and Mwendo in Ruhango; Nyarubaka and Musambira in Kamonyi.",
+    "reason": "Extension and Maintenance works on Kiyumba feeder",
+    "status": "Past",
+    "page_number": 55,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=55&cHash=12a6922f26aeca81ab385b70cc70dc82"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "25th November 2022",
+    "time": "12:00 PM - 03:00 PM",
+    "district_affected": "Gisagara, Ruhango, Nyanza, Huye",
+    "sector_areas": "All Sectors of Gisagara;Kinihira, Kabagari, Mwendo, Bweramana in Ruhango; Kinazi, Rusatira, Mbazi, Ruhashya in Huye; All Sectors of Nyanza District except Busoro",
+    "reason": "Maintenance works on Butare feeder",
+    "status": "Past",
+    "page_number": 56,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=56&cHash=39ad7a98abc88411a8594e9edeabb841"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "24th September 2022",
+    "time": "08:00 AM - 05:00 PM",
+    "district_affected": "Kirehe, Ngoma, Kayonza",
+    "sector_areas": "Murama Sector in Kayonza District, All Sectors of Ngoma District, and also the Sectors of Kirehe District except Nasho and Mpanga Sectors and some parts of Nyarubuye Sectors",
+    "reason": "Construction works on Rusumo-Bugesera Transmission Line",
+    "status": "Past",
+    "page_number": 65,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=65&cHash=608fe7b60ca638acf574e2b1f820b314"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "07th May 2022",
+    "time": "08:00 AM - 02:00 PM",
+    "district_affected": "Kicukiro, Nyarugenge, Kayonza, Rwamagana",
+    "sector_areas": "Kanombe, NYamirambo, Kimisagara,Kabarondo, Nyamirama, Mukarange, Ruramira, Gahini, Rukara, Murundi, Mwiri and Rwinkwavu, KIgabiro and MUnyaga",
+    "reason": "maintenance works on Kanombe feeder Itunda t-off, Nyamirambo and « KKK »,",
+    "status": "Past",
+    "page_number": 67,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=67&cHash=fefa89f57bb5db0a0ef10a9950ddb3c1"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "05th April 2022",
+    "time": "12:00 PM - 02:00 PM",
+    "district_affected": "Gasabo & Rulindo",
+    "sector_areas": "Some parts of Gasabo and Rulindo Districts.",
+    "reason": "Black start Test of Jabana Two power Plant",
+    "status": "Past",
+    "page_number": 69,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=69&cHash=a3a780ac22eb5a86cd4ceb6a08653346"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "20th April 2022",
+    "time": "12:00 PM - 02:00 PM",
+    "district_affected": "Kicukiro, Gasabo",
+    "sector_areas": "Some parts of Gasabo and Kicukiro Districts in the City of Kigali.",
+    "reason": "Black Test works on SOE Masoro & Birembo power Plant",
+    "status": "Past",
+    "page_number": 70,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=70&cHash=3f4a487a334bafd7a53ffb38cdb526df"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "26th January 2022",
+    "time": "08:00 AM - 10:00 AM",
+    "district_affected": "Gasabo, Rulindo",
+    "sector_areas": "Akamatamu Cell in Jabana Sector of Gasabo District, and some parts of Masoro and Murambi Sectors in Rulindo District.",
+    "reason": "Relocation works on Rutongo feeder",
+    "status": "Past",
+    "page_number": 74,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=74&cHash=cc5e4ad6e4ba04f63ce91dd38eeba5a7"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "06th June 2021",
+    "time": "12:00 PM - 02:00 PM",
+    "district_affected": "Burera and Bugesera",
+    "sector_areas": "Butaro, Rusarabuye and Kivuye in Burera and Bugesera Special Economic Zone area in Gashora",
+    "reason": "extension works on Kirambo feeder and Kanazi feeder on Bugesera Special Economic Zone t-off",
+    "status": "Past",
+    "page_number": 80,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=80&cHash=2d0644fbbd0a8dbb9d1ce81ef9e30271"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "17th April 2021",
+    "time": "12:00 PM - 01:00 PM",
+    "district_affected": "Rwamagana, Gasabo, Kicukiro",
+    "sector_areas": "Fumbwe in Rwamagana, Rusororo in Gasabo, Kagarama & Gahanga in Kicukiro District.",
+    "reason": "Extension works on Nyagasambu and Kagarama feeders",
+    "status": "Past",
+    "page_number": 81,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=81&cHash=b0a76b44726464e1415489b67f8f81d8"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "27th February 2021",
+    "time": "09:00 AM - 12:00 PM",
+    "district_affected": "Gisagara, Huye, Nyanza and Ruhango",
+    "sector_areas": "All Sectors of Gisagara District; Kinazi, Rusatira, Ruhashya and Mbazi Sectors in Huye District,Mukingo, Kigoma, Muyira, Busasamana, Ntyazo and Cyabakamyi Sectors in Nyanza District; Bweramana, Kabagari, Kinihira Sectors and the small part of Mwendo Secto",
+    "reason": "Maintenance works on Butare feeder",
+    "status": "Past",
+    "page_number": 83,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=83&cHash=927f11466e19672301ccef8000a90d69"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "27th March 2021",
+    "time": "09:00 AM - 12:00 PM",
+    "district_affected": "Muhanga, Ruhango & Ngororero",
+    "sector_areas": "All Sectors of Muhanga. Ruhango, Byimana, Mbuye, Mwendo & Bweramana in Ruhango District. Gatumba, Muhororo & Bwira in Ngororero District.",
+    "reason": "Maintenance Works",
+    "status": "Past",
+    "page_number": 84,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=84&cHash=65bc57cd73af736fd99c98ad8a18ab68"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "25th March 2021",
+    "time": "10:00 AM - 01:00 PM",
+    "district_affected": "Bugesera, Gakenke & Musanze",
+    "sector_areas": "Nyarugenge Sector in Bugesera. Cyabingo, Busengo, Rusasa, Muzo, Mataba, Gakenke Sectors in Gakenke. Rwaza Sector in Musanze.",
+    "reason": "Maintenance works.",
+    "status": "Past",
+    "page_number": 84,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=84&cHash=65bc57cd73af736fd99c98ad8a18ab68"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "03rd October 2020",
+    "time": "12:00 PM - 12:45 PM",
+    "district_affected": "Gakenke and Burera",
+    "sector_areas": "Kamubuga, Nemba and Gakenke Sectors in Gakenke District, Rugengabari Sector in Burera District.",
+    "reason": "Extension works on Gakenke feeder",
+    "status": "Past",
+    "page_number": 87,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=87&cHash=cc4c06726097cc91a16dc421af6b82a1"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "24th August 2020",
+    "time": "12:15 PM - 12:45 PM",
+    "district_affected": "Gasabo, Rulindo",
+    "sector_areas": "Kabuye and Bweramvura Cells in Jabana Sector of Gasabo District; Bubangu Cell in Murambi Sector of Rulindo District.",
+    "reason": "Relocation works on Kigali feeder at Bweramvura T-Off",
+    "status": "Past",
+    "page_number": 91,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=91&cHash=8f09203a8351a3273fd84eb25cfeeb4e"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "22nd August 2020",
+    "time": "10:00 AM - 02:00 PM",
+    "district_affected": "Karongi, Nyamasheke",
+    "sector_areas": "Gishyita, Mubuga and Twumba Sectors of Karongi District; Gihombo, Mahembe Sectors and parts of Macuba, Karambi and Kirimbi Sectors of Nyamasheke District.",
+    "reason": "Maintenance works on Gisovu and Mugonero feeders",
+    "status": "Past",
+    "page_number": 92,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=92&cHash=8ede030518272c48f934d6fec0f9d465"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "11th September 2020",
+    "time": "12:00 PM - 01:45 PM",
+    "district_affected": "Nyarugenge, Rulindo and Kamonyi",
+    "sector_areas": "Part of Kanyinya Sector in Nyarugenge District Parts of Rutonde, Kijabagwe and Shyorongi cells in Shyorongi Sector of Rulindo District and Small part of Ngamba Sector of Kamonyi District.",
+    "reason": "Maintenance works on « SKOL » feeder, RUTONDE T-off",
+    "status": "Past",
+    "page_number": 93,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=93&cHash=ae987819de309a30b3d84e7e6fd9a11f"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "15th August 2020",
+    "time": "11:00 AM - 12:00 PM",
+    "district_affected": "Kirehe and Ngoma",
+    "sector_areas": "All Ngoma and Kirehe Districts",
+    "reason": "Extension works on Zaza feeder",
+    "status": "Past",
+    "page_number": 94,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=94&cHash=049eee3c56464e0c27b965537e1af652"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "09th August 2020",
+    "time": "11:00 AM - 12:00 PM",
+    "district_affected": "Nyarugenge and Kicukiro",
+    "sector_areas": "Nyarurenzi and Mataba Cells in Mageragere Sector of Nyarugenge District. Rwabutenge, Murinja, Nunga and Gahanga Cells and a small part of Kagasa Cell in Gahanga Sector of Kicukiro District.",
+    "reason": "Extension works on Master Steel feeder",
+    "status": "Past",
+    "page_number": 95,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=95&cHash=21298307dfac26e87317698702826e73"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "08th August 2020",
+    "time": "09:00 AM - 12:00 PM",
+    "district_affected": "Nyamagabe, Nyaruguru and Huye",
+    "sector_areas": "All Sectors of Nyamagabe and Nyaruguru District; Ngoma, Huye, Mukura, Tumba, Karama, Gishamvu, Kigoma Sectors and a small part of Mbazi Sector in Huye District.",
+    "reason": "Maintenance works on Rukarara 2 feeder",
+    "status": "Past",
+    "page_number": 95,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=95&cHash=21298307dfac26e87317698702826e73"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "18th July 2020",
+    "time": "10:00 AM - 02:00 PM",
+    "district_affected": "Karongi, Rutsiro and Rubavu",
+    "sector_areas": "Rwankuba, Gitesi, Bwishyura ,Rubengera, Manihira, Mushubati, Gihango, Rusebeya, Mukura, Murunda, Musasa, Mushonyi, Boneza, Kivumu ,Kigeyo, Nyamyumba, Rugerero, Cyanzarwe, Nyundo, Gisenyi, Rubavu",
+    "reason": "Maintenance works on Kibuye feeders",
+    "status": "Past",
+    "page_number": 97,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=97&cHash=8e3b96eb7f4024c94406a90e589019e4"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "18th July 2020",
+    "time": "10:00 AM - 12:00 PM",
+    "district_affected": "Gicumbi, Rulindo and Burera",
+    "sector_areas": "Bwisige, Giti, Muko, Ruvune, Bungwe, Gatebe, Kivuye, Kisaro, Buyoga, Tumba, Kinihira, Mbogo",
+    "reason": "Maintenance works on Byumba and Gatuna feeders",
+    "status": "Past",
+    "page_number": 97,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=97&cHash=8e3b96eb7f4024c94406a90e589019e4"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "29th February 2020",
+    "time": "08:00 AM - 10:00 AM",
+    "district_affected": "Gisagara,Huye, Nyanza, Ruhango",
+    "sector_areas": "All Sectors of Gisagara District; Kinazi, Rusatira, Ruhashya and Mbazi Sectors of Huye District; Mukingo, Kigoma, Muyira, Busasamana, Ntyazo and Cyabakamyi Sectors of Nyanza District; Bweramana, Kabagari, Kinihira Sectors and the small part of Mwendo Sect",
+    "reason": "Maintenance works on Butare feeder",
+    "status": "Past",
+    "page_number": 101,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=101&cHash=f4fa8dd8419a19c1bc2762c77f33a975"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "28th February 2020",
+    "time": "03:00 PM - 04:00 PM",
+    "district_affected": "Nyabihu, Rubavu, Musanze, Gakenke",
+    "sector_areas": "All Sectors of Ngororero District except Gatumba Sector; All Sectors of Nyabihu District; Nyundo, Kanama, Nyakiriba, Kanzenze, Busasamana, Bugeshi, Mudende Sectors and small part of Cyanzarwe Sector of Rubavu District; Kimonyi, Gataraga, Busogo and Shingi",
+    "reason": "Extension works on Gisenyi feeder;",
+    "status": "Past",
+    "page_number": 101,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=101&cHash=f4fa8dd8419a19c1bc2762c77f33a975"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "29th February 2020",
+    "time": "09:00 AM - 10:30 AM",
+    "district_affected": "Huye & Nyaruguru",
+    "sector_areas": "On Butare T- Off: BNR building, Buss station, National Museum and Huye stadium. ~ On Nshili T- Off: Munini, Kivu, Muganza, Ruheru and Nyabimata sectors of Nyaruguru District.",
+    "reason": "Extension works on Rukarara II feeder part of Butare and Nshili T- Offs",
+    "status": "Past",
+    "page_number": 102,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=102&cHash=9eda3199af5e1f1d5b7fdae08ced5f61"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "02nd March 2019",
+    "time": "06:00 AM - 07:00 AM",
+    "district_affected": "Rulindo, Gasabo, Nyarugenge",
+    "sector_areas": "Ntarabana, Burega, Masoro, Murambi, Cyinzuzi, Shyorongi and Ngoma in Rulindo District, Jabana, Jali, Kacyiru, Gisozi, Kinyinya and Nduba in Gasabo District, Kigali Sector in Nyarugenge District.",
+    "reason": "Upgrading works at Jabana substation",
+    "status": "Past",
+    "page_number": 109,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=109&cHash=a1cf114339730e71bec63277727c8cae"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "23rd February 2019",
+    "time": "08:00 AM - 11:00 AM",
+    "district_affected": "Ruhango, Nyanza, Gisagara, Huye",
+    "sector_areas": "Bweramana, Ruhango, Kinihira and Mwendo in Ruhango, all Sectors of Nyanza except Busoro, all Sectors of Gisagara, Kinazi, Rusatira, Ruhashya and Mbazi in Huye District.",
+    "reason": "Maintenance works on Butare feeder",
+    "status": "Past",
+    "page_number": 110,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=110&cHash=06ebf5d30f1b0486028c4055c1f28524"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "05th December 2018",
+    "time": "12:00 AM - 12:00 AM",
+    "district_affected": "Ngororero, Muhanga",
+    "sector_areas": "Kabaya, Matyazo, Hindiro, Kageyo, Ngororero, Kavumu, Sovu, Gatumba, Muhororo and Bwira",
+    "reason": "maintenance works on Gatumba feeder",
+    "status": "Past",
+    "page_number": 111,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=111&cHash=3af0306ce7521859220a9db4c7d53a3c"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "03rd February 2019",
+    "time": "09:00 AM - 11:00 AM",
+    "district_affected": "Ngororero, Nyabihu",
+    "sector_areas": "Gatumba, 3. Nyundo, Kanama, Nyakiriba, Kanzenze, Busasamana, Bugeshi, Mudende ,Cyanzarwe",
+    "reason": "Extension works on Gisenyi feeder",
+    "status": "Past",
+    "page_number": 112,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=112&cHash=37cf6ef11197d7974c768e42feb16818"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "26th January 2019",
+    "time": "08:00 AM - 11:00 AM",
+    "district_affected": "Muhanga, Ruhango, Ngororero",
+    "sector_areas": "Shyogwe, Nyamabuye, Muhanga, Mushishiro, Rugendabari, Byimana, Ruhango, Bweramana, Mwendo, Gatumba, Muhororo and Bwira",
+    "reason": "Maintenance works on Gatumba feeder",
+    "status": "Past",
+    "page_number": 113,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=113&cHash=cbbc62408d9b82999a62265260d9cc8f"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "26th January 2019",
+    "time": "07:00 AM - 11:00 AM",
+    "district_affected": "Gasabo, Nyarugenge, Rulindo and Kamonyi",
+    "sector_areas": "Gatsata, Jali, Jabana, Muhima, Kigali, Runda, Shorongi",
+    "reason": "Construction works of 110KV Line JABANA-MOUNT KIGALI-GAHANGA",
+    "status": "Past",
+    "page_number": 113,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=113&cHash=cbbc62408d9b82999a62265260d9cc8f"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "18th November 2018",
+    "time": "11:00 AM - 01:00 PM",
+    "district_affected": "Muhanga, Ngororero",
+    "sector_areas": "Nyamabuye, Muhanga, Mushishiro and Nyarusange in Muhanga, Gatumba, Bwira, Muhororo and Ngororero in Ngororero.",
+    "reason": "Maintenance works on Gatumba feeder",
+    "status": "Past",
+    "page_number": 118,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=118&cHash=d457b0774ab0eacce3a5cb5a96cb85b5"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "13th October 2018",
+    "time": "08:00 AM - 11:00 AM",
+    "district_affected": "Ruhango, Nyanza, Gisagara, Huye",
+    "sector_areas": "All sector of Ruhango, All sectors of Nyanza, All sectors of Gisagara,Mbazi, Rusatira,Kinazi, Ruhashya (Huye)",
+    "reason": "Maintenance works on Butare Feeder",
+    "status": "Past",
+    "page_number": 121,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=121&cHash=4646b05a1e9c2793a24ecc788470d4de"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "13th October 2018",
+    "time": "08:00 AM - 10:30 AM",
+    "district_affected": "Kicukiro,Rwamagana & Gasabo",
+    "sector_areas": "Kanombe, Nyarugunga, Masaka (Kicukiro), Nyakariro, Nyagasambu, Gahengeri, Muyumbu & Fumbwe (Rwamagana) and Rusororo (Gasabo)",
+    "reason": "Upgrading and Commissioning Electrical Cabins and Substations in the City of Kigali",
+    "status": "Past",
+    "page_number": 122,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=122&cHash=220b0824013f22b47ae032e5407e9bb9"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "21st September 2018",
+    "time": "10:00 AM - 04:00 PM",
+    "district_affected": "Gasabo and Rwamagana",
+    "sector_areas": "Rusororo, Muyumbu and Fumbwe",
+    "reason": "Maintenance activities on Kanombe Feeder",
+    "status": "Past",
+    "page_number": 123,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=123&cHash=761ad4fa3345986e54b9092246a75d06"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "01st September 2018",
+    "time": "09:00 AM - 01:00 PM",
+    "district_affected": "Bugesera and Nyarugenge",
+    "sector_areas": "All sectors of Bugesera, Mageragere,Rugarama and part of Nyamirambo",
+    "reason": "Maintenance Activities on Kanazi 30kV Power line",
+    "status": "Past",
+    "page_number": 124,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=124&cHash=3a36e951e6a14fc4d95d5bdfee15dc84"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "02nd June 2018",
+    "time": "08:00 AM - 01:00 AM",
+    "district_affected": "Gasabo & Kicukiro",
+    "sector_areas": "Kimironko, Kanombe, Ndera & Gikomero",
+    "reason": "Rehabilitation activity of Rubungo switching substation",
+    "status": "Past",
+    "page_number": 125,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=125&cHash=68c197f5f6bf09bc4501cca14e8eccd7"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "sectors could not be tied to a single district; emitted against each",
+   "row": {
+    "date": "03rd June 2018",
+    "time": "08:00 AM - 01:00 AM",
+    "district_affected": "Gasabo & Kicukiro",
+    "sector_areas": "Kimironko, Kanombe, Ndera & Gikomero",
+    "reason": "Rehabilitation activity of Rubungo switching substation",
+    "status": "Past",
+    "page_number": 125,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=125&cHash=68c197f5f6bf09bc4501cca14e8eccd7"
+   }
+  },
+  {
+   "kind": "flagged",
+   "reason": "district not on the official list: Gaculiro on KG 416 ST, Other t-off roads",
+   "row": {
+    "date": "25th April 2018",
+    "time": "12:14 PM - Now",
+    "district_affected": "Gaculiro on KG 416 ST and other t-off roads",
+    "sector_areas": "Gaculiro on KG 416 ST and other t-off roads",
+    "reason": "repair works of damaged UG Cable",
+    "status": "Past",
+    "page_number": 126,
+    "source_url": "https://www.reg.rw/customer-service/power-outages/?tx_poweroutage_poweroutagelist%5B%40widget_0%5D%5BcurrentPage%5D=126&cHash=d304d9202ee5d4c25b76b247b43e5f33"
+   }
+  }
+ ]
+}

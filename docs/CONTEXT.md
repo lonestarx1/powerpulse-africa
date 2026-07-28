@@ -63,7 +63,9 @@ Judges from DeepMind will be attentive to this. Teams that treat it as a checkbo
 
 Five tracks. **Choose one.**
 
-> ✅ **Decided: Track 04 — Energy & Climate Infrastructure.** Our registration sheet has Track 03 circled, but we are submitting against what we actually built. Strip the energy domain from Umuriro and no product remains; strip the Kinyarwanda-first low-bandwidth design and an outage assistant still stands. The domain is the thing.
+> ✅ **Decided: Track 04 — Energy & Climate Infrastructure.** Our registration sheet has Track 03 circled, but we are submitting against what we actually built. Strip the energy domain and no product remains; strip the multilingual low-bandwidth design and an outage assistant still stands. The domain is the thing.
+>
+> The **repositioning of 28 July makes this call stronger, not weaker.** We are no longer a Kinyarwanda-first product — we are an outage assistant for African households and small businesses, with Rwanda as the MVP market and language handling as one feature of an energy product rather than its thesis. Under Track 03 that repositioning would read as scope drift; under Track 04 it reads as a product with a market beyond the demo.
 >
 > The secondary reason is defensive. Track 03's own example list includes *"a question-answering tool that works accurately in Kinyarwanda"* — filing there invites the dismissal in §7 (a chatbot over a scraped table) and puts us in the crowded field where every language-first app lands. Under Track 04 the REG data is the centerpiece, not the backdrop.
 >
@@ -81,7 +83,7 @@ Five tracks. **Choose one.**
 **Prompt:** Build an AI product designed specifically for a user who **speaks an African language, uses a low-end device, or has unreliable internet access**.
 *Examples given:* a question-answering tool that works accurately in Kinyarwanda, Swahili, or another African language; a credit assessment tool for informal workers using mobile money history and community references instead of a credit file.
 
-**How we satisfy it:** Kinyarwanda-first input and output; 390px mobile web app designed as an SMS/chat surface; explicitly framed as SMS/USSD in production. All three constraint categories in the prompt are addressed, not just one.
+**How we satisfy it:** input and output in the user's own language, Kinyarwanda first among them; 390px mobile web app designed as an SMS/chat surface; explicitly framed as SMS/USSD in production. All three constraint categories in the prompt are addressed, not just one.
 
 ### Track 04 — Energy & Climate Infrastructure ← **ours — this is what we file under**
 **Prompt:** Build a generative AI tool that helps a household, community, or local official produce, manage, or **adapt to energy and climate conditions**.
@@ -168,6 +170,7 @@ With 50 teams:
 - **Most submissions will be an LLM wrapper over invented or seeded data.** Our defensible edge is that our data is real, public, verifiable, and historical — a judge can open reg.rw and check.
 - **Almost nobody will have an eval set.** "26/30 correct, 5/5 correct refusals" is the sentence that survives a skim of 50 submissions.
 - **The available dismissal of our project** is "they scraped a government table and put a chatbot on it." Our defense is the historical statistics, the duration-conditioned advice, and the honest-uncertainty behavior — so all three have to be *visible in the video*, not buried in the repo.
+- **The second available dismissal, new as of the repositioning, is "pan-African is a claim, not a build."** It is a fair hit if we let it stand. Answer it with sequencing, never with ambition: Rwanda is the MVP because REG publishes openly and 502 real records are the fastest honest test of the pipeline; the ingest layer normalizes any published listing into one schema, so the next country is a scraper and a language, not a rewrite. **Continental framing plus one proven market reads as judgment. Continental framing alone reads as vapor.**
 
 ---
 
@@ -175,6 +178,7 @@ With 50 teams:
 
 Recorded here so they don't get relitigated at 1pm:
 
+0. **Positioning (28 July): pan-African product, Rwanda as MVP market.** Not "Kinyarwanda-first." The user is an African household or small business deciding what to do about a power cut; the language layer serves that user rather than defining the product. Every judge-facing artifact pairs the continental framing with the Rwandan proof point in the same breath — see §7.
 1. **Web app, mobile viewport — not native.** Judges watch a video; a 390px web UI is indistinguishable from native on screen, and native costs build tooling and install friction for zero points.
 2. **No crowdsourced reporting, no institutional dashboard, no household device survey.** All have cold-start problems and deliver value to someone who isn't in the room.
 3. **Code freeze 3:00pm.** Artifacts need 90 real minutes.
@@ -185,4 +189,6 @@ Recorded here so they don't get relitigated at 1pm:
 
 ## 9. One-line summary for anyone joining mid-day
 
-> We're building a Kinyarwanda-first web app that tells a user whether their power cut is planned, how long it's likely to last based on REG's own published records and history, and what to actually do about it for the next few hours — with advice that changes by user type and outage duration, and that says "I don't know" instead of inventing a restoration time.
+> We're building an outage assistant for African households and small businesses: ask in your own language, and it tells you whether your power cut is planned, how long it's likely to last based on the utility's own published records and history, and what to actually do about it for the next few hours — with advice that changes by user type and outage duration, and that says "I don't know" instead of inventing a restoration time. **Rwanda is the MVP**, running on 502 real records from REG; the ingest layer is built so the next utility is a scraper, not a rewrite.
+
+**Naming.** The project name is **not fixed** — earlier drafts used *Umuriro*, which is Kinyarwanda for "fire/power" and no longer fits a pan-African product. Artifacts carry `⟨name TBD⟩` until someone decides. **This blocks the 1-pager, the repo README and the video title card, so it is a 3:00pm-freeze item, not a nice-to-have.** Pick a name that survives leaving Rwanda.
