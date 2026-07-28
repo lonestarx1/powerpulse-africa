@@ -21,13 +21,13 @@ type Profile = (typeof PROFILES)[number]["id"];
 type Lang = "rw" | "en";
 
 /**
- * Kinyarwanda is the default and English is a toggle, not the other way round.
- * The language also goes to the API: if you have put the app in English you
- * want the answer in English, whatever language you typed the place name in.
+ * English is the default and Kinyarwanda is one tap away. The chosen language
+ * also goes to the API: if you have put the app in Kinyarwanda you want the
+ * answer in Kinyarwanda, whatever language you typed the place name in.
  */
 const COPY = {
   rw: {
-    tagline: "Amakuru ya REG · Kinyarwanda",
+    tagline: "Amakuru ya REG · u Rwanda",
     who: "Uri nde? Bituma inama zihuye n'ibyo ukeneye.",
     noAccount: "Nta konti. Nta makuru bwite abikwa kuri seriveri.",
     prompt: "Nta muriro? Andika aho uri — urugero:",
@@ -42,7 +42,7 @@ const COPY = {
     ],
   },
   en: {
-    tagline: "REG outage records · English",
+    tagline: "REG outage records · Rwanda",
     who: "Who are you? It changes the advice you get.",
     noAccount: "No account. Nothing personal is stored on the server.",
     prompt: "Power out? Type where you are — for example:",
@@ -76,7 +76,7 @@ type Bubble =
 
 export default function Home() {
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [lang, setLang] = useState<Lang>("rw");
+  const [lang, setLang] = useState<Lang>("en");
   const [bubbles, setBubbles] = useState<Bubble[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -84,15 +84,15 @@ export default function Home() {
   const t = COPY[lang];
 
   useEffect(() => {
-    const stored = localStorage.getItem("umuriro.profile") as Profile | null;
+    const stored = localStorage.getItem("powerpulse.profile") as Profile | null;
     if (stored && PROFILES.some((p) => p.id === stored)) setProfile(stored);
-    const storedLang = localStorage.getItem("umuriro.lang") as Lang | null;
+    const storedLang = localStorage.getItem("powerpulse.lang") as Lang | null;
     if (storedLang === "rw" || storedLang === "en") setLang(storedLang);
   }, []);
 
   function toggleLang() {
     const next: Lang = lang === "rw" ? "en" : "rw";
-    localStorage.setItem("umuriro.lang", next);
+    localStorage.setItem("powerpulse.lang", next);
     setLang(next);
   }
 
@@ -101,7 +101,7 @@ export default function Home() {
   }, [bubbles]);
 
   function chooseProfile(id: Profile) {
-    localStorage.setItem("umuriro.profile", id);
+    localStorage.setItem("powerpulse.profile", id);
     setProfile(id);
   }
 
@@ -153,14 +153,14 @@ export default function Home() {
     <div className="mx-auto flex h-dvh w-full max-w-[390px] flex-col bg-[#0d1117] text-zinc-100">
       <header className="flex items-center justify-between border-b border-white/10 px-4 py-3">
         <div>
-          <h1 className="text-base font-semibold tracking-tight">Umuriro</h1>
+          <h1 className="text-base font-semibold tracking-tight">PowerPulse</h1>
           <p className="text-[11px] text-zinc-400">{t.tagline}</p>
         </div>
         <div className="flex items-center gap-2">
           <LangToggle lang={lang} onToggle={toggleLang} />
           <button
             onClick={() => {
-              localStorage.removeItem("umuriro.profile");
+              localStorage.removeItem("powerpulse.profile");
               setProfile(null);
             }}
             className="rounded-full bg-white/10 px-3 py-1 text-[11px] text-zinc-300"
@@ -295,7 +295,7 @@ function ProfilePicker({
     <div className="mx-auto flex h-dvh w-full max-w-[390px] flex-col justify-center gap-6 bg-[#0d1117] px-6 text-zinc-100">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Umuriro</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">PowerPulse</h1>
           <p className="mt-2 text-sm text-zinc-400">{t.who}</p>
         </div>
         <LangToggle lang={lang} onToggle={onToggleLang} />

@@ -19,7 +19,7 @@ import { locate, type Candidate } from "./locate";
 import { historyFor, type History } from "./stats";
 import { liveStatus, outagesForPlace, places, type Outage } from "./outages";
 
-export const MODEL = process.env.UMURIRO_MODEL ?? "gemini-3.6-flash";
+export const MODEL = process.env.POWERPULSE_MODEL ?? "gemini-3.6-flash";
 
 export const PROFILES = ["household", "shop_owner", "remote_worker"] as const;
 export type Profile = (typeof PROFILES)[number];
@@ -104,19 +104,19 @@ type Context = {
 };
 
 /**
- * Rough language pick. Kinyarwanda is the default, so this only has to spot a
- * message that is unambiguously English -- being wrong costs a language, not a
- * fact.
+ * Rough language pick, used only when the interface did not tell us. English is
+ * the default, so this only has to spot a message that is recognisably
+ * Kinyarwanda -- being wrong costs a language, not a fact.
  */
 function detectLanguage(message: string): "rw" | "en" {
   const rwMarkers = /\b(nta|muriro|amashanyarazi|umuriro|hano|mfite|ryari|kuki|murakoze|byaba|ubu|aha|mu)\b/i;
   const enMarkers = /\b(the|power|is|out|when|will|back|how|long|my|we|there|no)\b/i;
   const rw = (message.match(rwMarkers) ?? []).length;
   const en = (message.match(enMarkers) ?? []).length;
-  return rw >= en ? "rw" : "en";
+  return rw > en ? "rw" : "en";
 }
 
-function label(c: { district: string; sector: string | null }, lang: "rw" | "en" = "rw"): string {
+function label(c: { district: string; sector: string | null }, lang: "rw" | "en" = "en"): string {
   if (c.sector) return `${c.sector}, ${c.district}`;
   return lang === "rw" ? `${c.district} (akarere kose)` : `${c.district} (whole district)`;
 }

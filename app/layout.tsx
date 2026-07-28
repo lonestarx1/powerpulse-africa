@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Umuriro — nta muriro?",
+  title: "PowerPulse — power out?",
   description:
-    "Kinyarwanda-first answers during a Rwandan power outage: is it planned, how long, and what to do — grounded in REG's published outage records.",
+    "Ask about a power outage in your own language and get a straight answer: is it planned, how long, and what to do — grounded in the utility's own published records.",
 };
 
 export default function RootLayout({
@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="rw"
+      lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>

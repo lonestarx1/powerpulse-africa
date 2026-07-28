@@ -9,7 +9,7 @@
 import { google } from "@ai-sdk/google";
 import { generateText } from "ai";
 
-const MODEL = process.env.UMURIRO_MODEL ?? "gemini-3.6-flash";
+const MODEL = process.env.POWERPULSE_MODEL ?? "gemini-3.6-flash";
 
 if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
   console.error("GOOGLE_GENERATIVE_AI_API_KEY is not set.");
