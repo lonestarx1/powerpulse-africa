@@ -94,18 +94,39 @@ Two things worth knowing about the source:
 
 30 questions — 25 answerable, 5 deliberately out of scope. Scored deterministically; no model grades its own work. Full per-question table in [`eval/results.md`](eval/results.md).
 
-<!-- TODO(eval): paste the summary table from eval/results.md after the run -->
-
 | Metric | Score | Target |
 | --- | --- | --- |
-| Location match accuracy | _run pending_ | ≥ 24/25 |
-| Correct refusal rate | _run pending_ | 5/5 |
-| Duration-grounded advice | _run pending_ | 3/3 |
-| Answers carrying a source line | _run pending_ | 100% |
+| Location match accuracy | **25/25 (100%)** | ≥ 24/25 |
+| Correct refusal rate | **5/5 (100%)** | 5/5 |
+| Duration-grounded advice | **3/3 (100%)** | 3/3 |
+| Answers carrying a source line | **25/25 (100%)** | 100% |
+
+Duration grounding is the metric that matters. Any model produces fluent advice; the question is whether the advice is tied to the window the utility actually published. It is checked by looking for that window in the answer text, not by asking a model whether it did well.
 
 ```bash
 npm run dev
 npm run eval     # → eval/results.md
+```
+
+## Demo
+
+Three cases, all reproducible against a local dev server:
+
+```bash
+# 1. Same place, same moment, two profiles -> materially different advice
+curl -s localhost:3000/api/advise -H 'Content-Type: application/json' -d \
+  '{"message":"power out in Gisozi","profile":"shop_owner","language":"en","now":"2026-08-05T10:30:00Z"}'
+curl -s localhost:3000/api/advise -H 'Content-Type: application/json' -d \
+  '{"message":"power out in Gisozi","profile":"remote_worker","language":"en","now":"2026-08-05T10:30:00Z"}'
+
+# 2. Kinyarwanda in, Kinyarwanda out, with the food-safety threshold applied
+curl -s localhost:3000/api/advise -H 'Content-Type: application/json' -d \
+  '{"message":"nta muriro mu Gisozi, mfite inyama muri frigo","profile":"shop_owner","now":"2026-08-05T10:30:00Z"}'
+
+# 3. It asks instead of guessing -- Kageyo is a real sector in Gicumbi (8
+#    records), Ngororero (6) and Gatsibo (4), so no reading dominates
+curl -s localhost:3000/api/advise -H 'Content-Type: application/json' -d \
+  '{"message":"no power in Kageyo","profile":"household","language":"en"}'
 ```
 
 ## Ethics

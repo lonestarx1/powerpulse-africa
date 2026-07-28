@@ -70,6 +70,8 @@ function ratio(a: string, b: string): number {
 }
 
 const FUZZY_THRESHOLD = 0.82;
+/** Below this we surface candidates instead of acting. "Kimironk" scores 0.89. */
+const FUZZY_CONFIDENT = 0.85;
 
 /** Tokens and 2-grams of the message, minus stopwords, longest first. */
 function candidateTerms(message: string): string[] {
@@ -130,9 +132,15 @@ export function locate(message: string): LocateResult {
       c.confirmedCount > 0,
   );
 
-  // Ambiguous when a different district claims the same name with comparable
-  // confidence, or when the only hit is fuzzy and not obviously right.
-  const needsConfirmation = rivals.length > 0 || best.score < 0.9;
+  // Repeated sector names are normal here -- Remera is a real sector in Gasabo
+  // (30 records), Gatsibo (5) and Musanze (3). Asking every time would make the
+  // product useless, so we take the dominant reading when it is at least 3x the
+  // nearest rival and let the answer name the district it used. A genuine
+  // split (say 8 vs 6) still goes back to the user.
+  const strongestRival = rivals[0]?.confirmedCount ?? 0;
+  const dominant = strongestRival === 0 || best.confirmedCount >= strongestRival * 3;
+
+  const needsConfirmation = !dominant || best.score < FUZZY_CONFIDENT;
 
   return {
     match: needsConfirmation ? null : best,
