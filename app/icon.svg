@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!--
+    The tab icon: the same mark as <Logo/> in components/chrome.tsx, on the
+    tinted square the wordmark sits in (bg-ask/15 over the app background,
+    resolved to a solid so it reads on a light browser chrome too).
+
+    The mark is scaled up and the stroke thickened relative to the in-app
+    version. At 16px a 7-unit stroke on a 64 viewBox is under two pixels and
+    the trace turns to mush; this keeps the pulse and the gap legible.
+  -->
+  <rect width="64" height="64" rx="15" fill="#1b2231"/>
+  <g transform="translate(6.9 8.4) scale(0.786)"
+     fill="none" stroke="#7aa2ff" stroke-width="9"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 32h9l6-17 8 30 5-13"/>
+    <path d="M48 32h12"/>
+  </g>
+</svg>
