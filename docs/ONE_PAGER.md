@@ -1,4 +1,4 @@
-# ⟨name TBD⟩
+# PowerPulse
 
 **Team Token Titans** · Track 04 — Energy & Climate Infrastructure · Frontiers GenAI Hackathon, ALX Kigali
 
@@ -36,7 +36,7 @@ Not a chatbot bolted onto a table. Three places where nothing else works:
 
 **https://www.reg.rw/customer-service/power-outages/** — Rwanda Energy Group's official outage listing.
 
-**502 records** scraped and parsed across **126 pages**, spanning **24 April 2018 – 5 August 2026** (498 historical, 4 forward-scheduled). Exploded to one row per outage × affected area. Committed to the repo. **A judge can open the source and check us.**
+**502 rows** scraped across **126 pages**, exploded into **3,201 records** covering **1,047 (district, sector) pairs**, spanning **24 April 2018 – 5 August 2026** (498 historical, 4 forward-scheduled). One record per outage × affected area, with zero rows dropped in parsing and 55 (11%) flagged as low-confidence rather than silently guessed. Committed to the repo. **A judge can open the source and check us.**
 
 No invented data. No seeded demo records. No cold start — the system is useful the moment it launches.
 
@@ -52,9 +52,12 @@ The architecture is utility-agnostic by construction: the ingest layer normalize
 
 | metric | result |
 |---|---|
-| Location match accuracy | ⟨ / 25⟩ |
-| Correct refusal rate (out-of-scope) | ⟨ / 5⟩ |
-| Duration-grounded advice | ⟨ / 5⟩ |
+| Location match accuracy | **25 / 25** |
+| Correct refusal rate (out-of-scope) | **5 / 5** |
+| Duration-grounded advice | **3 / 3** |
+| Answers carrying a visible source line | **25 / 25** |
+
+Scored deterministically — no model grades its own work. Duration grounding is checked by looking for the utility's published window in the answer text.
 
 *Full question set and scoring script in the repo under `eval/`.*
 
