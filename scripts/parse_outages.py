@@ -179,7 +179,12 @@ def parse_time_range(raw: str) -> tuple[str | None, str | None, int | None, bool
         if duration < 0:  # crosses midnight
             duration += 24 * 60
         if duration == 0:
-            duration = None
+            # "12:00 AM - 12:00 AM" and friends: 28 rows publish an end time
+            # identical to the start. That is not a two-minute outage, it is a
+            # row where nobody filled the field in. Treat it as no published
+            # end -- the honest-uncertainty path -- rather than letting a
+            # zero-length window read as a restoration time.
+            end, duration = None, None
     return start, end, duration, ongoing
 
 
