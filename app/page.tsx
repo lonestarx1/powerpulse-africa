@@ -1,323 +1,269 @@
-"use client";
-
 /**
- * The demo surface: a 390px SMS-style thread.
+ * Landing. The first thing a judge opens and the first thing a user opens.
  *
- * The production channel for this product is SMS/USSD -- the person we are
- * building for has no power and is rationing phone battery. This web page is
- * how we show it working, which is why it is shaped like a text conversation
- * rather than a dashboard.
+ * Every number on this page is read out of the committed REG dataset at render
+ * time rather than typed into the copy, so the pitch cannot drift away from
+ * what we actually shipped.
+ *
+ * Server component: no JavaScript is needed to read any of it.
  */
 
-import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { LangToggle, Wordmark } from "@/components/chrome";
+import { copyFor } from "@/lib/i18n";
+import { dataset, outages } from "@/lib/outages";
+import { readPrefs } from "@/lib/prefs";
+import { datasetSummary } from "@/lib/stats";
+import { fmtDateLong, placeLabel } from "@/lib/ui";
 
-const PROFILES = [
-  { id: "household", rw: "Urugo", en: "Household", emoji: "🏠" },
-  { id: "shop_owner", rw: "Ubucuruzi", en: "Shop", emoji: "🏪" },
-  { id: "remote_worker", rw: "Akazi ka interineti", en: "Remote work", emoji: "💻" },
-] as const;
-
-type Profile = (typeof PROFILES)[number]["id"];
-type Lang = "rw" | "en";
-
-/**
- * English is the default and Kinyarwanda is one tap away. The chosen language
- * also goes to the API: if you have put the app in Kinyarwanda you want the
- * answer in Kinyarwanda, whatever language you typed the place name in.
- */
-const COPY = {
-  rw: {
-    tagline: "Amakuru ya REG · u Rwanda",
-    who: "Uri nde? Bituma inama zihuye n'ibyo ukeneye.",
-    noAccount: "Nta konti. Nta makuru bwite abikwa kuri seriveri.",
-    prompt: "Nta muriro? Andika aho uri — urugero:",
-    placeholder: "Andika aho uri…",
-    send: "Ohereza",
-    failed: "Habaye ikibazo. Ongera ugerageze.",
-    offline: "Ntibishoboka guhuza na seriveri.",
-    suggestions: [
-      "Nta muriro mu Kimironko",
-      "Hano mu Masaka nta amashanyarazi",
-      "Ni ryari umuriro uzagaruka i Gisozi?",
-    ],
-  },
-  en: {
-    tagline: "REG outage records · Rwanda",
-    who: "Who are you? It changes the advice you get.",
-    noAccount: "No account. Nothing personal is stored on the server.",
-    prompt: "Power out? Type where you are — for example:",
-    placeholder: "Where are you?",
-    send: "Send",
-    failed: "Something went wrong. Try again.",
-    offline: "Could not reach the server.",
-    suggestions: [
-      "Power out in Kimironko",
-      "No electricity here in Masaka",
-      "When will power come back in Gisozi?",
-    ],
-  },
-} as const;
-
-type Answer = {
-  status_line: string;
-  duration_line: string;
-  advice: string[];
-  confidence_note: string;
-  source: string;
-};
-
-type Candidate = { district: string; sector: string | null; label: string };
-
-type Bubble =
-  | { from: "user"; text: string }
-  | { from: "bot"; kind: "answer"; answer: Answer; place: string }
-  | { from: "bot"; kind: "text"; text: string; candidates?: Candidate[] }
-  | { from: "bot"; kind: "typing" };
-
-export default function Home() {
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [lang, setLang] = useState<Lang>("en");
-  const [bubbles, setBubbles] = useState<Bubble[]>([]);
-  const [input, setInput] = useState("");
-  const [busy, setBusy] = useState(false);
-  const endRef = useRef<HTMLDivElement>(null);
-  const t = COPY[lang];
-
-  useEffect(() => {
-    const stored = localStorage.getItem("powerpulse.profile") as Profile | null;
-    if (stored && PROFILES.some((p) => p.id === stored)) setProfile(stored);
-    const storedLang = localStorage.getItem("powerpulse.lang") as Lang | null;
-    if (storedLang === "rw" || storedLang === "en") setLang(storedLang);
-  }, []);
-
-  function toggleLang() {
-    const next: Lang = lang === "rw" ? "en" : "rw";
-    localStorage.setItem("powerpulse.lang", next);
-    setLang(next);
-  }
-
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [bubbles]);
-
-  function chooseProfile(id: Profile) {
-    localStorage.setItem("powerpulse.profile", id);
-    setProfile(id);
-  }
-
-  async function send(text: string, place?: Candidate) {
-    if (!text.trim() || busy || !profile) return;
-    setInput("");
-    setBusy(true);
-    setBubbles((b) => [...b, { from: "user", text }, { from: "bot", kind: "typing" }]);
-
-    try {
-      const res = await fetch("/api/advise", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: text,
-          profile,
-          language: lang,
-          place: place ? { district: place.district, sector: place.sector } : undefined,
-        }),
-      });
-      const data = await res.json();
-
-      setBubbles((b) => {
-        const next = b.filter((x) => !("kind" in x && x.kind === "typing"));
-        if (!res.ok) {
-          return [...next, { from: "bot", kind: "text", text: data.error ?? t.failed }];
-        }
-        if (data.kind === "answer") {
-          const p = data.place.sector
-            ? `${data.place.sector}, ${data.place.district}`
-            : data.place.district;
-          return [...next, { from: "bot", kind: "answer", answer: data.answer, place: p }];
-        }
-        return [...next, { from: "bot", kind: "text", text: data.message, candidates: data.candidates }];
-      });
-    } catch {
-      setBubbles((b) => [
-        ...b.filter((x) => !("kind" in x && x.kind === "typing")),
-        { from: "bot", kind: "text", text: t.offline },
-      ]);
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  if (!profile) return <ProfilePicker onPick={chooseProfile} lang={lang} onToggleLang={toggleLang} />;
+export default async function Landing() {
+  const { profile, place, lang } = await readPrefs();
+  const t = copyFor(lang);
+  const resuming = profile !== null && place !== null;
+  const summary = datasetSummary(outages);
 
   return (
-    <div className="mx-auto flex h-dvh w-full max-w-[390px] flex-col bg-[#0d1117] text-zinc-100">
-      <header className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-        <div>
-          <h1 className="text-base font-semibold tracking-tight">PowerPulse</h1>
-          <p className="text-[11px] text-zinc-400">{t.tagline}</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <LangToggle lang={lang} onToggle={toggleLang} />
-          <button
-            onClick={() => {
-              localStorage.removeItem("powerpulse.profile");
-              setProfile(null);
-            }}
-            className="rounded-full bg-white/10 px-3 py-1 text-[11px] text-zinc-300"
-          >
-            {PROFILES.find((p) => p.id === profile)?.[lang]}
-          </button>
-        </div>
-      </header>
-
-      <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
-        {bubbles.length === 0 && (
-          <div className="space-y-3 pt-4">
-            <p className="text-sm text-zinc-400">{t.prompt}</p>
-            {t.suggestions.map((s) => (
-              <button
-                key={s}
-                onClick={() => send(s)}
-                className="block w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-sm text-zinc-200"
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {bubbles.map((b, i) =>
-          b.from === "user" ? (
-            <div key={i} className="flex justify-end">
-              <p className="max-w-[85%] rounded-2xl rounded-br-sm bg-amber-500 px-4 py-2 text-sm text-black">
-                {b.text}
-              </p>
-            </div>
-          ) : b.kind === "typing" ? (
-            <div key={i} className="flex gap-1 px-2 py-2">
-              {[0, 1, 2].map((d) => (
-                <span
-                  key={d}
-                  className="h-2 w-2 animate-bounce rounded-full bg-zinc-500"
-                  style={{ animationDelay: `${d * 120}ms` }}
-                />
-              ))}
-            </div>
-          ) : b.kind === "answer" ? (
-            <AnswerBubble key={i} answer={b.answer} place={b.place} />
-          ) : (
-            <div key={i} className="max-w-[90%] space-y-2">
-              <p className="rounded-2xl rounded-bl-sm bg-white/10 px-4 py-2 text-sm">{b.text}</p>
-              {b.candidates?.map((c) => (
-                <button
-                  key={c.label}
-                  onClick={() => send(c.label, c)}
-                  className="mr-2 inline-block rounded-full border border-amber-500/40 px-3 py-1 text-xs text-amber-300"
-                >
-                  {c.label}
-                </button>
-              ))}
-            </div>
-          ),
-        )}
-        <div ref={endRef} />
-      </div>
-
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          send(input);
-        }}
-        className="flex gap-2 border-t border-white/10 px-3 py-3"
-      >
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={t.placeholder}
-          className="flex-1 rounded-full bg-white/10 px-4 py-2 text-sm outline-none placeholder:text-zinc-500"
+    <main className="flex flex-1 flex-col">
+      {/* ------------------------------------------------------------ hero */}
+      <section className="relative overflow-hidden px-5 pb-10 pt-5">
+        <div
+          className="glow pointer-events-none absolute inset-x-0 -top-28 h-96"
+          style={{ ["--glow-color" as string]: "var(--color-timed)" }}
+          aria-hidden
         />
-        <button
-          type="submit"
-          disabled={busy || !input.trim()}
-          className="rounded-full bg-amber-500 px-4 py-2 text-sm font-medium text-black disabled:opacity-40"
-        >
-          {t.send}
-        </button>
-      </form>
-    </div>
-  );
-}
 
-function AnswerBubble({ answer, place }: { answer: Answer; place: string }) {
-  return (
-    <div className="max-w-[90%] space-y-2 rounded-2xl rounded-bl-sm bg-white/10 px-4 py-3 text-sm">
-      <p className="font-medium text-amber-300">{place}</p>
-      <p>{answer.status_line}</p>
-      <p className="text-zinc-300">{answer.duration_line}</p>
-      <ul className="space-y-1.5 pt-1">
-        {answer.advice.map((a, i) => (
-          <li key={i} className="flex gap-2">
-            <span className="text-amber-400">•</span>
-            <span>{a}</span>
-          </li>
-        ))}
-      </ul>
-      <p className="pt-1 text-[11px] italic text-zinc-400">{answer.confidence_note}</p>
-      {/* Visible grounding: every answer names the record it came from. */}
-      <p className="border-t border-white/10 pt-2 text-[11px] text-zinc-500">{answer.source}</p>
-    </div>
-  );
-}
+        <div className="relative">
+          <div className="flex items-center justify-between gap-3">
+            <Wordmark />
+            <LangToggle lang={lang} next="/" />
+          </div>
 
-function LangToggle({ lang, onToggle }: { lang: Lang; onToggle: () => void }) {
-  return (
-    <button
-      onClick={onToggle}
-      aria-label={lang === "rw" ? "Switch to English" : "Hindura ujye mu Kinyarwanda"}
-      className="rounded-full border border-white/15 px-2.5 py-1 text-[11px] font-medium text-zinc-300"
-    >
-      {lang === "rw" ? "EN" : "RW"}
-    </button>
-  );
-}
+          <h1 className="mt-10 text-[34px] font-semibold leading-[1.08] tracking-[-0.02em]">
+            {t.heroA}
+            <span className="block text-muted">{t.heroB}</span>
+          </h1>
 
-function ProfilePicker({
-  onPick,
-  lang,
-  onToggleLang,
-}: {
-  onPick: (id: Profile) => void;
-  lang: Lang;
-  onToggleLang: () => void;
-}) {
-  const t = COPY[lang];
-  return (
-    <div className="mx-auto flex h-dvh w-full max-w-[390px] flex-col justify-center gap-6 bg-[#0d1117] px-6 text-zinc-100">
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">PowerPulse</h1>
-          <p className="mt-2 text-sm text-zinc-400">{t.who}</p>
+          <p className="mt-4 text-[15px] leading-relaxed text-muted">{t.heroBody}</p>
+
+          <div className="mt-7 flex flex-col gap-2.5">
+            <Link
+              href={resuming ? "/area" : "/start"}
+              className="grid min-h-[52px] place-items-center rounded-full bg-ask px-4 text-center text-[15px] font-semibold text-black transition active:scale-[0.98]"
+            >
+              {resuming ? placeLabel(place.district, place.sector) : t.getStarted}
+            </Link>
+            {resuming ? (
+              <Link
+                href="/start"
+                className="grid min-h-[46px] place-items-center rounded-full border border-line bg-surface text-[14px] text-muted transition active:scale-[0.98]"
+              >
+                {t.startOver}
+              </Link>
+            ) : (
+              <p className="text-center text-[12px] text-faint">{t.noAccount}</p>
+            )}
+          </div>
         </div>
-        <LangToggle lang={lang} onToggle={onToggleLang} />
+      </section>
+
+      {/* -------------------------------------------------- product preview */}
+      <section className="px-5">
+        <Preview />
+      </section>
+
+      {/* ---------------------------------------------------------- states */}
+      <section className="px-5 pt-12">
+        <SectionTitle>{t.statesTitle}</SectionTitle>
+        <div className="mt-4 flex flex-col gap-2.5">
+          <StateRow color="var(--color-timed)" title={t.stateTimed} body={t.stateTimedBody} />
+          <StateRow color="var(--color-open)" title={t.stateOpen} body={t.stateOpenBody} dashed />
+          <StateRow color="var(--color-clear)" title={t.stateClear} body={t.stateClearBody} />
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------ steps */}
+      <section className="px-5 pt-12">
+        <SectionTitle>{t.howTitle}</SectionTitle>
+        <ol className="mt-4 flex flex-col gap-3.5">
+          <Step n={1} title={t.step1} body={t.step1Body} />
+          <Step n={2} title={t.step2} body={t.step2Body} />
+          <Step n={3} title={t.step3} body={t.step3Body} />
+          <Step n={4} title={t.step4} body={t.step4Body} />
+        </ol>
+      </section>
+
+      {/* ------------------------------------------------------------- data */}
+      <section className="px-5 pt-12">
+        <div className="rounded-card border border-line bg-surface p-5">
+          <SectionTitle>{t.dataTitle}</SectionTitle>
+          <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-5">
+            <Figure value={dataset.raw_row_count.toLocaleString()} label={t.dataNotices} />
+            <Figure value={summary.records.toLocaleString()} label={t.dataRecords} />
+            <Figure value={String(summary.districts)} label={t.dataDistricts} />
+            <Figure value={summary.sectors.toLocaleString()} label={t.dataSectors} />
+          </div>
+          <p className="mt-5 text-[12.5px] leading-relaxed text-muted">
+            {summary.from ? fmtDateLong(summary.from) : "—"} — {summary.to ? fmtDateLong(summary.to) : "—"}
+            , {t.dataBody}
+          </p>
+          {dataset.source_url ? (
+            <a
+              href={dataset.source_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 flex min-h-[44px] items-center justify-center rounded-full border border-line bg-raised px-4 text-center text-[13px] transition active:scale-[0.98]"
+            >
+              {t.openSource}
+            </a>
+          ) : null}
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------- honesty */}
+      <section className="px-5 pt-12">
+        <div className="rounded-card border border-dashed border-open/40 bg-open/5 p-5">
+          <h2 className="text-[18px] font-semibold leading-snug tracking-tight text-open/95">
+            {t.honestTitle}
+          </h2>
+          <p className="mt-2.5 text-[13.5px] leading-relaxed text-muted">{t.honestBody}</p>
+          <ul className="mt-4 flex flex-col gap-2.5 text-[12.5px] leading-relaxed text-muted">
+            <Rule>{t.honestWeak}</Rule>
+            <Rule>{t.honestFood}</Rule>
+            <Rule>{t.honestAsk}</Rule>
+          </ul>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------- foot */}
+      <section className="mt-auto px-5 pb-10 pt-12">
+        <Link
+          href={resuming ? "/area" : "/start"}
+          className="grid min-h-[52px] place-items-center rounded-full bg-ask text-[15px] font-semibold text-black transition active:scale-[0.98]"
+        >
+          {resuming ? t.continue : t.getStarted}
+        </Link>
+        <p className="mt-5 text-center text-[11px] leading-relaxed text-faint">{t.scope}</p>
+      </section>
+    </main>
+  );
+}
+
+/* ---------------------------------------------------------------- pieces */
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="text-[11px] font-medium uppercase tracking-[0.14em] text-faint">{children}</h2>
+  );
+}
+
+/** A still of the real status card, so the product is visible above the fold. */
+function Preview() {
+  const R = 64;
+  const C = 2 * Math.PI * R;
+  return (
+    <div className="relative overflow-hidden rounded-card border border-line bg-surface px-4 pb-5 pt-5">
+      <div
+        className="glow pointer-events-none absolute inset-x-0 -top-16 h-64"
+        style={{ ["--glow-color" as string]: "var(--color-timed)" }}
+        aria-hidden
+      />
+      <div className="relative flex flex-col items-center">
+        <span className="flex items-center gap-2 rounded-full border border-line bg-raised px-3 py-1.5 text-[11.5px]">
+          <span aria-hidden className="size-1.5 rounded-full bg-timed" />
+          Kinyinya, Gasabo
+        </span>
+
+        <div className="relative mt-4 grid size-[128px] place-items-center">
+          <svg viewBox="0 0 160 160" className="absolute size-full -rotate-90">
+            <circle cx="80" cy="80" r={R} fill="none" stroke="var(--color-line)" strokeWidth="7" />
+            <circle
+              cx="80"
+              cy="80"
+              r={R}
+              fill="none"
+              stroke="var(--color-timed)"
+              strokeWidth="7"
+              strokeLinecap="round"
+              strokeDasharray={C}
+              strokeDashoffset={C * 0.38}
+            />
+          </svg>
+          <div className="relative text-center">
+            <div className="tnum text-[27px] font-semibold leading-none tracking-tight">1:15</div>
+            <div className="mt-1 text-[9px] uppercase tracking-[0.14em] text-muted">left</div>
+          </div>
+        </div>
+
+        <p className="mt-4 text-[20px] font-semibold tracking-tight text-timed">Power is out</p>
+        <p className="mt-1 text-[12.5px] text-muted">
+          Planned work · back at <span className="tnum text-text">14:00</span>
+        </p>
+        <p className="mt-3 font-mono text-[10px] text-faint">REG · planned · Wed 5 Aug</p>
       </div>
-      <div className="space-y-3">
-        {PROFILES.map((p) => (
-          <button
-            key={p.id}
-            onClick={() => onPick(p.id)}
-            className="flex w-full items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-left"
-          >
-            <span className="text-xl">{p.emoji}</span>
-            <span>
-              <span className="block text-sm font-medium">{p[lang]}</span>
-              <span className="block text-xs text-zinc-500">
-                {lang === "rw" ? p.en : p.rw}
-              </span>
-            </span>
-          </button>
-        ))}
-      </div>
-      <p className="text-[11px] text-zinc-500">{t.noAccount}</p>
     </div>
+  );
+}
+
+function StateRow({
+  color,
+  title,
+  body,
+  dashed,
+}: {
+  color: string;
+  title: string;
+  body: string;
+  dashed?: boolean;
+}) {
+  return (
+    <div
+      className={`flex gap-3 rounded-card border bg-surface px-4 py-3.5 ${dashed ? "border-dashed" : ""}`}
+      style={{ borderColor: `color-mix(in oklab, ${color} 30%, transparent)` }}
+    >
+      <span
+        aria-hidden
+        className="mt-[6px] size-2 shrink-0 rounded-full"
+        style={{ background: color }}
+      />
+      <div className="min-w-0">
+        <p className="text-[13.5px] font-medium leading-snug">{title}</p>
+        <p className="mt-1 text-[12.5px] leading-relaxed text-muted">{body}</p>
+      </div>
+    </div>
+  );
+}
+
+function Step({ n, title, body }: { n: number; title: string; body: string }) {
+  return (
+    <li className="flex gap-3.5">
+      <span
+        aria-hidden
+        className="tnum mt-0.5 grid size-7 shrink-0 place-items-center rounded-full border border-line bg-surface text-[12px] font-medium text-muted"
+      >
+        {n}
+      </span>
+      <div className="min-w-0">
+        <p className="text-[14px] font-medium leading-snug">{title}</p>
+        <p className="mt-1 text-[12.5px] leading-relaxed text-muted">{body}</p>
+      </div>
+    </li>
+  );
+}
+
+function Figure({ value, label }: { value: string; label: string }) {
+  return (
+    <div>
+      <div className="tnum text-[24px] font-semibold leading-none tracking-tight">{value}</div>
+      <div className="mt-1.5 text-[11.5px] leading-snug text-muted">{label}</div>
+    </div>
+  );
+}
+
+function Rule({ children }: { children: React.ReactNode }) {
+  return (
+    <li className="flex gap-2.5">
+      <span aria-hidden className="mt-[7px] size-1 shrink-0 rounded-full bg-open/70" />
+      <span>{children}</span>
+    </li>
   );
 }

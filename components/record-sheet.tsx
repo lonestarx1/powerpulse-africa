@@ -25,6 +25,48 @@ export type RecordFields = {
   inferred: boolean;
 };
 
+/** A row in the history list. Same sheet, different trigger. */
+export function RecordRow({
+  record,
+  left,
+  right,
+  sub,
+  tone,
+}: {
+  record: RecordFields;
+  left: string;
+  right: string;
+  sub: string;
+  tone: string;
+}) {
+  return (
+    <Sheet
+      record={record}
+      tone={tone}
+      trigger={(open) => (
+        <button
+          type="button"
+          onClick={open}
+          className="flex w-full items-center gap-3 px-4 py-3 text-left transition active:bg-raised"
+        >
+          <span
+            aria-hidden
+            className="size-1.5 shrink-0 rounded-full"
+            style={{ background: tone }}
+          />
+          <span className="min-w-0 flex-1">
+            <span className="flex items-baseline justify-between gap-3">
+              <span className="truncate text-[13.5px] font-medium">{left}</span>
+              <span className="tnum shrink-0 text-[12px] text-muted">{right}</span>
+            </span>
+            <span className="mt-0.5 block truncate text-[11.5px] text-faint">{sub}</span>
+          </span>
+        </button>
+      )}
+    />
+  );
+}
+
 export function RecordSheet({
   label,
   record,
@@ -33,6 +75,40 @@ export function RecordSheet({
   label: string;
   record: RecordFields;
   tone: string;
+}) {
+  return (
+    <Sheet
+      record={record}
+      tone={tone}
+      trigger={(open) => (
+        <button
+          type="button"
+          onClick={open}
+          className="flex w-full items-center justify-between gap-3 rounded-full border border-line bg-raised px-3.5 py-2.5 text-left transition active:scale-[0.98]"
+        >
+          <span className="flex min-w-0 items-center gap-2">
+            <span
+              aria-hidden
+              className="inline-block size-1.5 shrink-0 rounded-full"
+              style={{ background: tone }}
+            />
+            <span className="truncate text-[12.5px] text-muted">{label}</span>
+          </span>
+          <span className="shrink-0 text-[12px] text-faint">Show the record ›</span>
+        </button>
+      )}
+    />
+  );
+}
+
+function Sheet({
+  record,
+  tone,
+  trigger,
+}: {
+  record: RecordFields;
+  tone: string;
+  trigger: (open: () => void) => React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -51,21 +127,7 @@ export function RecordSheet({
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="flex w-full items-center justify-between gap-3 rounded-full border border-line bg-raised px-3.5 py-2.5 text-left transition active:scale-[0.98]"
-      >
-        <span className="flex min-w-0 items-center gap-2">
-          <span
-            aria-hidden
-            className="inline-block size-1.5 shrink-0 rounded-full"
-            style={{ background: tone }}
-          />
-          <span className="truncate text-[12.5px] text-muted">{label}</span>
-        </span>
-        <span className="shrink-0 text-[12px] text-faint">Show the record ›</span>
-      </button>
+      {trigger(() => setOpen(true))}
 
       {open ? (
         <div
